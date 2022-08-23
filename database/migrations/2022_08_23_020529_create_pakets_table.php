@@ -19,8 +19,6 @@ class CreatePaketsTable extends Migration
             $table->string('nomor_akun');
             $table->string('status');
             $table->date('waktu_pelaksanaan');
-            $table->unsignedBigInteger('id_rab');
-            $table->foreign('id_rab')->references('id')->on('rabs');
             $table->integer('total_harga');
             $table->integer('ppn');
             $table->integer('total_rab');

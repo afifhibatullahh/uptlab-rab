@@ -19,8 +19,6 @@ class CreateRabsTable extends Migration
             $table->string('nomor_akun');
             $table->string('status');
             $table->date('waktu_pelaksanaan');
-            $table->unsignedBigInteger('id_item');
-            $table->foreign('id_item')->references('id')->on('items');
 
             $table->integer('jumlah');
             $table->timestamps();
