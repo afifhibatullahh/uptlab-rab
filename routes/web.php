@@ -25,9 +25,9 @@ Route::controller(Item::class)->group(function () {
     Route::get('/barang/edit/{id}', 'edit');
     Route::get('/barang/{id}', 'show');
 
-    Route::post('/barang', 'store');
-    Route::put('/barang/{id}', 'store');
-    Route::delete('/barang/{id}', 'delete');
+    Route::post('/barang/store', 'store');
+    Route::post('/barang/store/{id}', 'store');
+    Route::delete('/barang/delete/{id}', 'delete');
 });
 
 Route::controller(Rab::class)->group(function () {
