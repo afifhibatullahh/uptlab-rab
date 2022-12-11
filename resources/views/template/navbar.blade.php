@@ -1,0 +1,34 @@
+<nav class="topnav navbar navbar-light">
+    <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
+        <i class="fe fe-menu navbar-toggler-icon"></i>
+    </button>
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
+                <i class="fe fe-sun fe-16"></i>
+            </a>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-shortcut">
+                <span class="fe fe-grid fe-16"></span>
+            </a>
+        </li>
+        <li class="nav-item nav-notif">
+            <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-notif">
+                <span class="fe fe-bell fe-16"></span>
+                <span class="dot dot-md bg-success"></span>
+            </a>
+        </li> -->
+        <li class="nav-item dropdown d-flex align-items-center">
+            <a class="nav-link dropdown-toggle pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fe fe-settings fe-14 mr-1"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item text-dark" style="cursor: pointer;" data-toggle="modal"
+                    data-target="#modal-settings" onclick="editSettings()">Settings</a>
+                <a class="dropdown-item" href="<?= url('api/auth/logout') ?>">Logout</a>
+            </div>
+        </li>
+    </ul>
+</nav>
