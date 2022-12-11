@@ -126,5 +126,5 @@ const ImagePreview = ({
     folder = "",
     fileName = "default.jpg",
 } = {}) => {
-    return `<img src="${site_url}assets/assets/${folder}/${fileName}" width="${width}" height="${height}" id="${id}" class="avatar-img rounded-circle mb-3" alt="Foto ${folder}">`;
+    return `<img src="${site_url}/assets/images/${folder}/${fileName}" width="${width}" height="${height}" id="${id}" class="avatar-img rounded-circle mb-3" alt="Gambar ${folder}">`;
 };

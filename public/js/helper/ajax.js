@@ -7,7 +7,7 @@ const ajax = ({
     type = "GET",
     beforeSend,
     success = function (response) {
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status < 300) {
             Toast({ title: "Berhasil", message: response.message });
         }
         if (response.status === 403) {
@@ -39,6 +39,7 @@ const ajax = ({
     return $.ajax({
         type: type,
         url: url,
+        cache: false,
         data: data,
         processData: processData,
         contentType: contentType,
