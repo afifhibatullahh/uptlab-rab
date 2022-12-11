@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\SatuanController;
 use App\Http\Controllers\Home;
 use App\Http\Controllers\Item;
+use App\Http\Controllers\Jenis;
+use App\Http\Controllers\Laboratorium;
 use App\Http\Controllers\PaketRab;
 use App\Http\Controllers\Rab;
+use App\Http\Controllers\Satuan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +26,28 @@ Route::get('/', [Home::class, 'index']);
 Route::controller(Item::class)->group(function () {
     Route::get('/item', 'index');
     Route::get('/item/{id}', 'show');
+});
+
+Route::controller(Satuan::class)->group(function () {
+    Route::get('/satuan', 'index');
+    Route::get('/satuan/{id}', 'show');
+});
+
+Route::controller(SatuanController::class)->group(function () {
+    Route::get('/api/satuan', 'index');
+    Route::get('/api/satuan/show/{id}', 'show');
+    Route::post('/api/satuan/store', 'store');
+    Route::patch('/api/satuan/update/{id}', 'update');
+    Route::delete('/api/satuan/delete/{id}', 'delete');
+});
+
+Route::controller(Jenis::class)->group(function () {
+    Route::get('/jenis', 'index');
+    Route::get('/jenis/{id}', 'show');
+});
+Route::controller(Laboratorium::class)->group(function () {
+    Route::get('/laboratorium', 'index');
+    Route::get('/laboratorium/{id}', 'show');
 });
 
 Route::controller(Rab::class)->group(function () {

@@ -37,6 +37,9 @@ const ajax = ({
     },
 } = {}) => {
     return $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
         type: type,
         url: url,
         cache: false,

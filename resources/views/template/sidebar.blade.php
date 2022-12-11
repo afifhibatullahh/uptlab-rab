@@ -20,19 +20,19 @@
         </div>
         <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-                <a class="nav-link" href="<?= url('dashboard') ?>">
+                <a class="nav-link" href="<?= url('/') ?>">
                     <i class="fe fe-home fe-16"></i>
                     <span class="ml-3 item-text">Dashboard</span>
                 </a>
             </li>
         </ul>
         <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Master Data</span>
+            <span>Main Data</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
                 <a class="nav-link" href="<?= url('item') ?>">
-                    <i class="fe fe-users fe-16"></i>
+                    <i class="fe fe-archive fe-16"></i>
                     <span class="ml-3 item-text">Item</span>
                 </a>
             </li>
@@ -41,6 +41,26 @@
                     <i class="fe fe-book fe-16"></i>
                     <span class="ml-3 item-text">Rencana Anggaran Belanja</span>
                 </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#forms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+                    <i class="fe fe-database fe-16"></i>
+                    <span class="ml-3 item-text">Master Data</span>
+                </a>
+                <ul class="collapse list-unstyled pl-4 w-100" id="forms">
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="<?= url('satuan') ?>"><span
+                                class="ml-1 item-text">Satuan</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="<?= url('jenis') ?>"><span
+                                class="ml-1 item-text">Jenis</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="<?= url('laboratorium') ?>"><span
+                                class="ml-1 item-text">Laboratorium</span></a>
+                    </li>
+                </ul>
             </li>
         </ul>
         <p class="text-muted nav-heading mt-4 mb-1">
@@ -54,5 +74,23 @@
                 </a>
             </li>
         </ul>
+        <p class="text-muted nav-heading mt-4 mb-1">
+            <span>Manajemen User</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+                <a class="nav-link" href="<?= url('rab/laporan') ?>">
+                    <i class="fe fe-users fe-16"></i>
+                    <span class="ml-3 item-text">Users</span>
+                </a>
+            </li>
+            <li class="nav-item w-100">
+                <a class="nav-link" href="<?= url('rab/laporan') ?>">
+                    <i class="fe fe-user fe-16"></i>
+                    <span class="ml-3 item-text">Account</span>
+                </a>
+            </li>
+        </ul>
+
     </nav>
 </aside>
