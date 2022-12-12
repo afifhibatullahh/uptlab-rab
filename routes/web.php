@@ -33,14 +33,6 @@ Route::controller(Satuan::class)->group(function () {
     Route::get('/satuan/{id}', 'show');
 });
 
-Route::controller(SatuanController::class)->group(function () {
-    Route::get('/api/satuan', 'index');
-    Route::get('/api/satuan/show/{id}', 'show');
-    Route::post('/api/satuan/store', 'store');
-    Route::patch('/api/satuan/update/{id}', 'update');
-    Route::delete('/api/satuan/delete/{id}', 'delete');
-});
-
 Route::controller(Jenis::class)->group(function () {
     Route::get('/jenis', 'index');
     Route::get('/jenis/{id}', 'show');

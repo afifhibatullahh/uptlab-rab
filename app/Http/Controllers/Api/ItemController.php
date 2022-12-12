@@ -57,4 +57,37 @@ class ItemController extends Controller
         //return response
         return new ItemResource($item, 200, 'Data item Berhasil Ditambahkan!');
     }
+
+    public function update(Request $request, $id)
+    {
+        //create item
+        $item = Item::where('id', $id)->first();
+        //return response
+        if ($item) {
+            $item->update([
+                'gambar'     => 'default.jpg',
+                'nama_barang'     => $request->nama_barang,
+                'satuan'   => $request->satuan,
+                'item'   => $request->item,
+                'sumber'   => $request->sumber,
+                'harga'   => $request->harga,
+                'spesifikasi'   => $request->spesifikasi,
+            ]);
+            return  response()->json(['data' => $item, 'message' => 'Data berhasil diubah', 'status' => 200], 200);
+        } else
+            return  response()->json(['data' => $item, 'message' => 'Data gagal diubah', 'status' => 403], 403);
+    }
+
+    public function delete($id)
+    {
+        //create item
+        $item = Item::find($id);
+
+        //return response
+        if ($item) {
+            $item->delete();
+            return  response()->json(['data' => $item, 'message' => 'Data berhasil dihapus', 'status' => 200], 200);
+        } else
+            return  response()->json(['data' => $item, 'message' => 'Data gagal dihapus', 'status' => 403], 403);
+    }
 }

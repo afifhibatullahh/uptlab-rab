@@ -31,12 +31,15 @@
 
     <!-- Modal -->
     <div id="modal-item"></div>
+
 </main>
 
 @endSection
 
 @section('script'); ?>
 <script>
+    const listSatuan = <?= $listSatuan; ?>;
+    const listJenis = <?= $listJenis; ?>;
 </script>
 <script src="{{url('js/features/item.js')}}"></script>
 @endSection

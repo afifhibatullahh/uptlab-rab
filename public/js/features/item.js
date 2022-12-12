@@ -2,50 +2,15 @@ const menuContext = "Item";
 const tableId = "#table-item";
 const formId = "#form-item";
 const indexAPI = `${site_url_api}/items`;
+const storeAPI = `${site_url_api}/items/store`;
+const updateAPI = `${site_url_api}/items/update`;
+const deleteAPI = `${site_url_api}/items/delete`;
 const allItem = new Set();
 
 const modalId = "#modal";
 const modalTitleId = "#modal-title";
 const modalProceedBtnId = "#modal-proceed-btn";
 const modalContainerId = "#modal-item";
-
-const listSatuan = [
-    {
-        label: "PCS",
-        value: "PCS",
-    },
-    {
-        label: "Box",
-        value: "Box",
-    },
-    {
-        label: "LUSIN",
-        value: "LUSIN",
-    },
-];
-
-const listJenis = [
-    {
-        label: "Bahan Kimia",
-        value: "Bahan Kimia",
-    },
-    {
-        label: "Bahan Rumah Tangga",
-        value: 2,
-    },
-    {
-        label: "ATK dan Studio",
-        value: 3,
-    },
-    {
-        label: "Bahan Elektrikal",
-        value: 4,
-    },
-    {
-        label: "Bahan Bangunan",
-        value: 5,
-    },
-];
 
 $(document).ready(function () {
     const tableItem = initializeDatatables(tableId, indexAPI, [
@@ -73,9 +38,12 @@ $(document).ready(function () {
                     `;
             },
         },
-        { data: "nama_barang", title: "Nama" },
-        { data: "jenis", title: "Jenis" },
-        { data: "satuan", title: "Satuan" },
+        { data: "nama_barang", title: "Item" },
+        {
+            data: "harga",
+            title: "Harga (Rp)",
+            render: $.fn.dataTable.render.number(".", ",", 2),
+        },
         { data: "spesifikasi", title: "Spesifikasi" },
     ]);
 
@@ -85,7 +53,6 @@ $(document).ready(function () {
             .parent()
             .hasClass("sorting_1");
 
-        console.log(isClickedOnActionsButton);
         if (!isClickedOnActionsButton) {
             window.location.replace(site_url + "/items/show/" + itemId);
         }
@@ -194,13 +161,14 @@ const save = () => {
     const isEdit = $(modalProceedBtnId).text() === "Ubah";
 
     if (isEdit) requestBody.append("_method", "PATCH");
+    console.log(url);
 
+    console.log($(formId).attr("action"));
     ajax({
         type: "POST",
         url: url,
         data: requestBody,
         success: function (response) {
-            console.log(response);
             if (response.status >= 200 && response.status < 300) {
                 reloadTable(tableId);
                 $(modalId).modal("hide");
@@ -228,7 +196,7 @@ const save = () => {
 const create = () => {
     $(modalTitleId).text(`Tambah ${menuContext}`);
     $(modalProceedBtnId).text("Tambah");
-    $(formId).attr("action", indexAPI);
+    $(formId).attr("action", storeAPI);
     $(formId).trigger("reset");
     $("#image-preview").attr(
         "src",
@@ -243,7 +211,6 @@ const create = () => {
 
 const edit = (id) => {
     const currentItem = getCurrentItem(id);
-    console.log(currentItem);
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
     $("#nama_barang").val(currentItem.nama_barang);
@@ -252,12 +219,13 @@ const edit = (id) => {
     $("#sumber").val(currentItem.sumber);
     $(`option[value=${currentItem.satuan}]`).prop("selected", true);
     $(`option[value=${currentItem.jenis}]`).prop("selected", true);
-    $("#form-item").attr("action", indexAPI + id);
+    $(formId).attr("action", updateAPI + "/" + id);
     $("#image-preview").attr(
         "src",
         site_url + "/assets/images/item/" + currentItem.gambar
     );
-    console.log(site_url + "/assets/images/item/" + currentItem.gambar);
+
+    console.log($(formId).attr("action"));
     clearValidationError();
 };
 
@@ -275,7 +243,7 @@ const destroy = (id) => {
                 function (instance, toast) {
                     $.ajax({
                         type: "POST",
-                        url: indexAPI + id,
+                        url: deleteAPI + "/" + id,
                         data: {
                             _method: "DELETE",
                         },

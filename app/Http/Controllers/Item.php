@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item as ModelsItem;
+use App\Models\Jenis as ModelsJenis;
+use App\Models\Satuan as ModelsSatuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Item extends Controller
 {
@@ -11,7 +14,17 @@ class Item extends Controller
     {
         $item = ModelsItem::all();
         $title = 'Item';
-        return view('item.index', compact(['item', 'title']));
+        $satuan = DB::table('satuan')
+            ->select('satuan as label', 'id as value')
+            ->get();
+        $jenis = DB::table('jenis')
+            ->select('jenis as label', 'id as value')
+            ->get();
+
+        $listJenis =  json_encode($jenis);
+        $listSatuan =  json_encode($satuan);
+
+        return view('item.index', compact(['item', 'title', 'listSatuan', 'listJenis']));
     }
 
     public function show($id = null)
