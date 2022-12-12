@@ -8,7 +8,8 @@ class Rab extends Controller
 {
     public function index()
     {
-        return view('rab.index');
+        $title = 'Rencana Anggaran Belanja';
+        return view('rab.index', \compact(['title']));
     }
 
     public function add()

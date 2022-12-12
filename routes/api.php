@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\JenisController;
 use App\Http\Controllers\Api\LaboratoriumController;
+use App\Http\Controllers\Api\RabController;
 use App\Http\Controllers\Api\SatuanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -53,4 +54,10 @@ Route::controller(LaboratoriumController::class)->group(function () {
     Route::post('/laboratorium/store', 'store');
     Route::patch('/laboratorium/update/{id}', 'update');
     Route::delete('/laboratorium/delete/{id}', 'delete');
+});
+
+Route::controller(RabController::class)->group(function () {
+    Route::get('/rab', 'index');
+    Route::get('/rab/show/{id}', 'show');
+    Route::delete('/rab/delete/{id}', 'delete');
 });

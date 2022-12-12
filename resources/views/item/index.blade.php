@@ -28,7 +28,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal -->
     <div id="modal-item"></div>
 
@@ -41,5 +40,6 @@
     const listSatuan = <?= $listSatuan; ?>;
     const listJenis = <?= $listJenis; ?>;
 </script>
+
 <script src="{{url('js/features/item.js')}}"></script>
 @endSection

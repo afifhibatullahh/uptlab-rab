@@ -44,6 +44,7 @@ Route::controller(Laboratorium::class)->group(function () {
 
 Route::controller(Rab::class)->group(function () {
     Route::get('/rab', 'index');
+    Route::get('/rab/add', 'add');
     Route::get('/rab/{id}', 'show');
 });
 

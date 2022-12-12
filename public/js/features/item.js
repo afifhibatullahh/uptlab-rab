@@ -93,6 +93,7 @@ $(document).ready(function () {
         ${InputField({
             title: "Harga",
             type: "number",
+            id: "custom-money",
             name: "harga",
             width: "col-md-4",
         })}
@@ -161,9 +162,7 @@ const save = () => {
     const isEdit = $(modalProceedBtnId).text() === "Ubah";
 
     if (isEdit) requestBody.append("_method", "PATCH");
-    console.log(url);
 
-    console.log($(formId).attr("action"));
     ajax({
         type: "POST",
         url: url,
@@ -225,10 +224,8 @@ const edit = (id) => {
         site_url + "/assets/images/item/" + currentItem.gambar
     );
 
-    console.log($(formId).attr("action"));
     clearValidationError();
 };
-
 const destroy = (id) => {
     Toast({
         timeout: 5000,

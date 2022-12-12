@@ -16,9 +16,10 @@ const InputField = ({
                 <label for="${name}">${title}</label>
                 <input type="${type}" id="${
         id !== "" ? id : name
-    }" name="${name}" onchange="${onchange}" onclick="${onclick}" class="form-control" ${
-        autofocus ? "autofocus" : ""
-    } ${disabled ? "disabled" : ""} accept="${type === "file" ? accept : ""}">
+    }" name="${name}" onchange="${onchange}" onclick="${onclick}" class="form-control ${
+        id === "custom-money" ? "input-money" : ""
+    }" ${autofocus ? "autofocus" : ""} ${disabled ? "disabled" : ""}
+      accept="${type === "file" ? accept : ""}">
                 <div id="error-${name}" class="invalid-feedback"></div>
             </div>
         </div>
@@ -128,3 +129,7 @@ const ImagePreview = ({
 } = {}) => {
     return `<img src="${site_url}/assets/images/${folder}/${fileName}" width="${width}" height="${height}" id="${id}" class="avatar-img rounded-circle mb-3" alt="Gambar ${folder}">`;
 };
+
+$(".input-money").mask("#.##0,00", {
+    reverse: true,
+});
