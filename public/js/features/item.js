@@ -95,7 +95,6 @@ $(document).ready(function () {
             type: "number",
             id: "custom-money",
             name: "harga",
-            width: "col-md-4",
         })}
         ${Dropdown({
             title: "Satuan",
@@ -161,6 +160,7 @@ const save = () => {
     const requestBody = new FormData(form);
     const isEdit = $(modalProceedBtnId).text() === "Ubah";
 
+    console.log(requestBody);
     if (isEdit) requestBody.append("_method", "PATCH");
 
     ajax({
