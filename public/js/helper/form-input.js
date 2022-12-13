@@ -56,6 +56,7 @@ const Dropdown = ({
     title = "",
     name = "",
     width = "",
+    id = "",
     dropdownList = [],
     onchange = "",
     onclick = "clearValidationError(this)",
@@ -63,7 +64,9 @@ const Dropdown = ({
     return `
         <div class="form-group ${width}">
             <label for="${name}">${title}</label>
-            <select name="${name}" id="${name}" class="form-control" onchange="${onchange}" onclick="${onclick}">
+            <select name="${name}" id="${
+        id === "" ? name : id
+    }" class="form-control" onchange="${onchange}" onclick="${onclick}">
                 <option value="" hidden>-- Pilih ${title} --</option>    
                 ${
                     dropdownList !== []

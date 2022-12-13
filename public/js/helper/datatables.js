@@ -34,3 +34,11 @@ const initializeDatatablesFromArray = (tableId, columns, ajaxData = []) => {
 const reloadTable = (tableId) => {
     $(tableId).DataTable().ajax.reload(null, false);
 };
+
+const reloadTableWithoutAjax = (tableId, data) => {
+    $(tableId)
+        .DataTable({
+            data: data,
+        })
+        .reload(null, false);
+};

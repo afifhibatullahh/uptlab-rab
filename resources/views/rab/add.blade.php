@@ -10,7 +10,8 @@
                     <h2 class="page-title mb-0">
                         Buat Rencana Anggaran Belanja
                     </h2>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" onclick="create()">Simpan</button>
+                    {{-- <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#modal">Simpan</button> --}}
                 </div>
             </div>
         </div>
@@ -22,7 +23,8 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="example-helping">Judul Pengadaan</label>
-                                    <input type="text" id="example-helping" class="form-control" placeholder="Input with helping text">
+                                    <input type="text" id="example-helping" class="form-control"
+                                        placeholder="Input with helping text">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="simpleinput">Nomor Akun</label>
@@ -43,9 +45,11 @@
                                 <div class="form-group mb-3">
                                     <label for="date-input1">Waktu Pelaksanaan</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control drgpicker" id="date-input1" value="04/24/2020" aria-describedby="button-addon2">
+                                        <input type="text" class="form-control drgpicker" id="date-input1"
+                                            value="04/24/2020" aria-describedby="button-addon2">
                                         <div class="input-group-append">
-                                            <div class="input-group-text" id="button-addon-date"><span class="fe fe-calendar fe-16"></span></div>
+                                            <div class="input-group-text" id="button-addon-date"><span
+                                                    class="fe fe-calendar fe-16"></span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +63,8 @@
                         <strong class="card-title">
                             <div class="d-flex justify-content-between mb-2">
                                 <h3>Item</h3>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modal" onclick="create()">Tambah Item</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                    data-target="#modal" onclick="addItem()">Tambah Item</button>
                             </div>
                         </strong>
                     </div>

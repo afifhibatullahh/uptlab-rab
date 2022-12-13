@@ -7,72 +7,88 @@ const modalTitleId = "#modal-title";
 const modalProceedBtnId = "#modal-proceed-btn";
 const modalContainerId = "#modal-rabdetail";
 
-const allItem = new Set();
+const dataItem = [];
 
-const dataItem = [
+const product = [
     {
-        nama_barang: "vasdf",
-        jumlah: "2",
-        satuan: "sf",
-        price: "3434",
-        amount_price: "3434",
-        jenis: "df",
-        tax: "11",
-        id: 1,
+        item_id: 1,
+        nama_barang: "ads",
+        harga: 2000,
+        unit: "pcs",
+        jenis: "Kimia",
+    },
+    {
+        item_id: 2,
+        nama_barang: "makan",
+        harga: 3000,
+        unit: "pcs",
+        jenis: "Kimia",
+    },
+    {
+        item_id: 3,
+        nama_barang: "pood",
+        harga: 50000,
+        unit: "pcs",
+        jenis: "Kimia",
     },
 ];
 
-$(document).ready(function () {
-    const tableItem = initializeDatatablesFromArray(
-        tableId,
-        [
-            {
-                data: "id",
-                title: "Actions",
-                searchable: false,
-                orderable: false,
-                render: function (id, type, item) {
-                    allItem.add(item);
+let rowData = {
+    nama_barang: "",
+    jumlah: "",
+    satuan: "",
+    price: "0",
+    netamount: "",
+    tax: "",
+    jenis: "",
+};
 
-                    return `
-                        ${Button({
-                            text: "Edit",
-                            color: "warning btn-sm",
-                            onclick: `edit(${id})`,
-                            dataToggle: "modal",
-                            dataTarget: modalId,
-                        })}
-                        ${Button({
-                            text: "Hapus",
-                            color: "danger btn-sm",
-                            onclick: `destroy(${id})`,
-                        })}
-                    `;
-                },
+const tableItem = initializeDatatablesFromArray(
+    tableId,
+    [
+        {
+            data: "id",
+            title: "Actions",
+            searchable: false,
+            orderable: false,
+            render: function (id, type, item) {
+                return `
+                    ${Button({
+                        text: "Edit",
+                        color: "warning btn-sm",
+                        onclick: `edit(${item.item_id})`,
+                        dataToggle: "modal",
+                        dataTarget: modalId,
+                    })}
+                    ${Button({
+                        text: "Hapus",
+                        color: "danger btn-sm",
+                        onclick: `destroy(${id})`,
+                    })}
+                `;
             },
-            { data: "nama_barang", title: "Nama Barang" },
-            { data: "jumlah", title: "Jumlah" },
-            { data: "satuan", title: "Satuan" },
-            { data: "price", title: "Harga Satuan(Rp)" },
-            { data: "amount_price", title: "Jumlah Harga" },
-            { data: "jenis", title: "Jenis Barang" },
-            { data: "tax", title: "Pajak (%)" },
-        ],
-        dataItem
-    );
+        },
+        { data: "nama_barang", title: "Nama Barang" },
+        { data: "jumlah", title: "Jumlah" },
+        { data: "satuan", title: "Satuan" },
+        { data: "price", title: "Harga Satuan(Rp)" },
+        { data: "netamount", title: "Jumlah Harga" },
+        { data: "jenis", title: "Jenis Barang" },
+        { data: "tax", title: "Pajak (%)" },
+    ],
+    dataItem
+);
 
-    tableItem.on("click", "tr", function (event) {
-        let itemId = tableItem.row(this).data();
-        const isClickedOnActionsButton = $(event.target)
-            .parent()
-            .hasClass("sorting_1");
+tableItem.on("click", "tr", function (event) {
+    let itemId = tableItem.row(this).data();
+    const isClickedOnActionsButton = $(event.target)
+        .parent()
+        .hasClass("sorting_1");
+});
 
-        console.log(tableItem.row(this).data());
-    });
-
-    $(modalContainerId).append(
-        `${ModalPlain({
-            body: `
+$(modalContainerId).append(
+    `${ModalPlain({
+        body: `
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card-header">
@@ -84,9 +100,7 @@ $(document).ready(function () {
                             </button>
                         </div>
                         <div class="card-body">
-                            <form id="${formId.slice(
-                                1
-                            )}" action="/" enctype="multipart/form-data">
+                            <form id="${formId.slice(1)}">
                                 <div class="row">
                                     <div id="form-item-left-section" class="col-md-6"></div>
                                     <div id="form-item-right-section" class="col-md-6"></div>
@@ -95,18 +109,27 @@ $(document).ready(function () {
                         </div>
                     </div>
                 </div>`,
-            size: "lg",
-        })}`
-    );
+        size: "lg",
+    })}`
+);
 
-    $("#form-item-left-section").append(`
+$("#form-item-left-section").append(`
         ${Dropdown({
             title: "Nama Barang",
             name: "nama_barang",
+            id: "filter_item",
             dropdownList: [
                 {
                     label: "ads",
                     value: 1,
+                },
+                {
+                    label: "makan",
+                    value: 2,
+                },
+                {
+                    label: "pood",
+                    value: 3,
                 },
             ],
         })}
@@ -131,44 +154,216 @@ $(document).ready(function () {
             id: modalProceedBtnId.slice(1),
             onclick: "save()",
         })}
-        ${Button({ text: "Cancel", dataDismiss: "modal", color: "danger" })}
+        ${Button({
+            text: "Cancel",
+            dataDismiss: "modal",
+            color: "danger",
+            onclick: "resetRowDataValues()",
+        })}
     `);
 
-    $("#form-item-right-section").append(`
+$("#form-item-right-section").append(`
         ${InputField({
             title: "Qty",
             type: "number",
             name: "jumlah",
+            id: "purchaseqty",
         })}
-        <h6 id="taxtotal">Pajak : xxx</h6>
-        <h5 id="netamount">Total Harga : xxx</h5>
+        <h6>Harga Barang : <span id="price">0</span></h6>
+        <h6>Pembelian : <span id="pembelian">0</span></h6>
+        <h6>Pajak : <span id="taxtotal">0</span></h6>
+        <h5>Total Harga : <span id="netamount">0</span></h5>
     `);
+
+const totalPajak = $("#taxtotal");
+const totalAmount = $("#netamount");
+const purchaseQty = $("#purchaseqty");
+const pembelian = $("#pembelian");
+const taxSelected = $("#tax");
+
+$("#filter_item").on("change", function () {
+    let selectedVal = $(this).find(":selected").val();
+
+    const item = product.find((item) => item.item_id == selectedVal);
+
+    const formValues = getFormValues();
+    rowData = {
+        ...rowData,
+        ...formValues,
+        nama_barang: item.nama_barang,
+        satuan: item.unit,
+        price: item.harga,
+        jenis: item.jenis,
+        item_id: item.item_id,
+    };
+
+    rowData = setTotalItem(rowData);
 });
+
+purchaseQty.on("input", function (e) {
+    const qtyVal = $(this).val();
+
+    rowData = { ...rowData, jumlah: Number(qtyVal) };
+
+    rowData = setTotalItem(rowData);
+});
+
+taxSelected.on("change", function () {
+    let selectedVal = $(this).find(":selected").val();
+
+    rowData = { ...rowData, tax: Number(selectedVal) };
+
+    rowData = setTotalItem(rowData);
+});
+
+const setTotalItem = (datas) => {
+    $("#price").html(`${datas.price}`);
+    const totalPembelian = Number(datas.price ?? 0) * Number(datas.jumlah);
+
+    pembelian.html(`${totalPembelian}`);
+
+    const pajak =
+        datas.tax == 0 ? 0 : (Number(datas.tax) / 100) * totalPembelian;
+
+    totalPajak.html(`${pajak}`);
+
+    const amount = totalPembelian - pajak;
+
+    totalAmount.html(`${amount}`);
+
+    return (datas = {
+        ...datas,
+        netamount: amount,
+    });
+};
+
+let productTemp;
+
+const addItem = () => {
+    $(modalTitleId).text(`Tambah ${menuContext}`);
+    $(modalProceedBtnId).text("Tambah");
+    $(formId).trigger("reset");
+    resetRowDataValues();
+    setTotalItem(rowData);
+};
+
+const save = () => {
+    let validation = {
+        isValidate: true,
+        message: "",
+    };
+
+    const isEdit = $(modalProceedBtnId).text() === "Ubah";
+
+    for (let key in rowData) {
+        if (key == "tax") continue;
+        if (rowData[key] == "") {
+            validation = {
+                isValidate: false,
+                message: "Item Gagal ditambahkan",
+            };
+        }
+    }
+
+    dataItem.forEach((item) => {
+        if (rowData.item_id == productTemp);
+        else if (item.item_id == rowData.item_id) {
+            validation = {
+                isValidate: false,
+                message: "Item sudah terdapat dalam list tabel!",
+            };
+            return;
+        }
+    });
+
+    if (validation.isValidate) {
+        if (!isEdit) {
+            dataItem.push(rowData);
+            tableItem.rows.add([rowData]).draw();
+        } else {
+            objIndex = dataItem.findIndex(
+                (obj) => obj.item_id == rowData.item_id
+            );
+            if (objIndex < 0) return;
+            dataItem[objIndex] = rowData;
+            tableItem.row(objIndex).data(rowData).draw();
+        }
+        $(modalId).modal("hide");
+
+        Toast({
+            title: "Berhasil",
+            message: "Item Berhasil ditambahkan",
+        });
+        resetRowDataValues();
+    } else {
+        Toast({
+            title: "Gagal",
+            type: "error",
+            message: validation.message,
+        });
+    }
+    console.log(dataItem);
+};
 
 const getCurrentItem = (id) => {
     let currentItem;
 
-    for (const item of allItem) {
-        if (item.id == id) currentItem = item;
+    for (const item of dataItem) {
+        if (item.item_id == id) currentItem = item;
     }
 
     return currentItem;
 };
 
-const save = () => {
-    const form = $(formId)[0];
-    const isEdit = $(modalProceedBtnId).text() === "Ubah";
-    const requestBody = new FormData(form);
-    console.log(requestBody, form);
-};
-
 const edit = (id) => {
     const currentItem = getCurrentItem(id);
+
+    console.log(currentItem);
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
-    $("#nama_barang").val(currentItem.nama_barang);
-    $("#jumlah").val(currentItem.jumlah);
+    $("#purchaseqty").val(currentItem.jumlah);
     $(`option[value=${currentItem.tax}]`).prop("selected", true);
+    $(`option[value=${currentItem.item_id}]`).prop("selected", true);
+    const item = product.find((item) => item.item_id == id);
+    productTemp = id;
+    rowData = {
+        ...rowData,
+        nama_barang: item.nama_barang,
+        satuan: item.unit,
+        price: item.harga,
+        jumlah: currentItem.jumlah,
+        tax: currentItem.tax,
+        netamount: currentItem.netamount,
+        jenis: item.jenis,
+        item_id: item.item_id,
+    };
 
-    clearValidationError();
+    setTotalItem(rowData);
+    console.log(rowData);
+    // clearValidationError();
+};
+
+const getFormValues = () => {
+    const form = $(formId)[0];
+    const requestBody = new FormData(form);
+
+    const formValues = {
+        nama_barang: requestBody.get("nama_barang"),
+        jumlah: requestBody.get("jumlah"),
+        tax: requestBody.get("tax"),
+    };
+
+    return formValues;
+};
+
+const resetRowDataValues = () => {
+    rowData = {
+        nama_barang: "",
+        jumlah: "",
+        satuan: "",
+        netamount: "",
+        tax: "",
+        jenis: "",
+        price: "0",
+    };
 };
