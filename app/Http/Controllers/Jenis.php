@@ -10,7 +10,7 @@ class Jenis extends Controller
     public function index()
     {
         $jenis = ModelsJenis::all();
-        $title = 'Jenis';
+        $title = 'Jenis Item';
         return view('jenis.index', compact(['jenis', 'title']));
     }
 

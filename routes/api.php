@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\JenisController;
+use App\Http\Controllers\Api\JenisRabController;
 use App\Http\Controllers\Api\LaboratoriumController;
 use App\Http\Controllers\Api\RabController;
 use App\Http\Controllers\Api\SatuanController;
@@ -46,6 +47,14 @@ Route::controller(JenisController::class)->group(function () {
     Route::post('/jenis/store', 'store');
     Route::patch('/jenis/update/{id}', 'update');
     Route::delete('/jenis/delete/{id}', 'delete');
+});
+
+Route::controller(JenisRabController::class)->group(function () {
+    Route::get('/jenisrab', 'index');
+    Route::get('/jenisrab/show/{id}', 'show');
+    Route::post('/jenisrab/store', 'store');
+    Route::patch('/jenisrab/update/{id}', 'update');
+    Route::delete('/jenisrab/delete/{id}', 'delete');
 });
 
 Route::controller(LaboratoriumController::class)->group(function () {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\SatuanController;
 use App\Http\Controllers\Home;
 use App\Http\Controllers\Item;
 use App\Http\Controllers\Jenis;
+use App\Http\Controllers\JenisRab;
 use App\Http\Controllers\Laboratorium;
 use App\Http\Controllers\PaketRab;
 use App\Http\Controllers\Rab;
@@ -37,6 +38,12 @@ Route::controller(Jenis::class)->group(function () {
     Route::get('/jenis', 'index');
     Route::get('/jenis/{id}', 'show');
 });
+
+Route::controller(JenisRab::class)->group(function () {
+    Route::get('/jenisrab', 'index');
+    Route::get('/jenisrab/{id}', 'show');
+});
+
 Route::controller(Laboratorium::class)->group(function () {
     Route::get('/laboratorium', 'index');
     Route::get('/laboratorium/{id}', 'show');

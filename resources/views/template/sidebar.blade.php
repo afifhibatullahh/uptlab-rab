@@ -53,8 +53,12 @@
                                 class="ml-1 item-text">Satuan</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link pl-3" href="<?= url('jenis') ?>"><span
-                                class="ml-1 item-text">Jenis</span></a>
+                        <a class="nav-link pl-3" href="<?= url('jenis') ?>"><span class="ml-1 item-text">Jenis
+                                Item</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="<?= url('jenisrab') ?>"><span class="ml-1 item-text">Jenis
+                                RAB</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link pl-3" href="<?= url('laboratorium') ?>"><span
