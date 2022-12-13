@@ -119,6 +119,9 @@
 
 @section('script'); ?>
 <script>
+    const listItems = <?= $listItems; ?>;
+
+    console.log(listItems);
 </script>
 <script src="{{url('js/features/rabdetail.js')}}"></script>
 @endSection

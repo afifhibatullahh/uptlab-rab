@@ -9,29 +9,16 @@ const modalContainerId = "#modal-rabdetail";
 
 const dataItem = [];
 
-const product = [
-    {
-        item_id: 1,
-        nama_barang: "ads",
-        harga: 2000,
-        unit: "pcs",
-        jenis: "Kimia",
-    },
-    {
-        item_id: 2,
-        nama_barang: "makan",
-        harga: 3000,
-        unit: "pcs",
-        jenis: "Kimia",
-    },
-    {
-        item_id: 3,
-        nama_barang: "pood",
-        harga: 50000,
-        unit: "pcs",
-        jenis: "Kimia",
-    },
-];
+const product = listItems;
+
+dropdownList = product.map((item) => {
+    return {
+        label: item.nama_barang,
+        value: item.id,
+    };
+});
+
+console.log(dropdownList);
 
 let rowData = {
     nama_barang: "",
@@ -56,14 +43,14 @@ const tableItem = initializeDatatablesFromArray(
                     ${Button({
                         text: "Edit",
                         color: "warning btn-sm",
-                        onclick: `edit(${item.item_id})`,
+                        onclick: `edit(${item.id})`,
                         dataToggle: "modal",
                         dataTarget: modalId,
                     })}
                     ${Button({
                         text: "Hapus",
                         color: "danger btn-sm",
-                        onclick: `destroy(${item.item_id})`,
+                        onclick: `destroy(${item.id})`,
                     })}
                 `;
             },
@@ -71,8 +58,16 @@ const tableItem = initializeDatatablesFromArray(
         { data: "nama_barang", title: "Nama Barang" },
         { data: "jumlah", title: "Jumlah" },
         { data: "satuan", title: "Satuan" },
-        { data: "price", title: "Harga Satuan(Rp)" },
-        { data: "netamount", title: "Jumlah Harga" },
+        {
+            data: "price",
+            title: "Harga Satuan(Rp)",
+            render: $.fn.dataTable.render.number(".", ",", 2),
+        },
+        {
+            data: "netamount",
+            title: "Jumlah Harga",
+            render: $.fn.dataTable.render.number(".", ",", 2),
+        },
         { data: "jenis", title: "Jenis Barang" },
         { data: "tax", title: "Pajak (%)" },
     ],
@@ -118,20 +113,7 @@ $("#form-item-left-section").append(`
             title: "Nama Barang",
             name: "nama_barang",
             id: "filter_item",
-            dropdownList: [
-                {
-                    label: "ads",
-                    value: 1,
-                },
-                {
-                    label: "makan",
-                    value: 2,
-                },
-                {
-                    label: "pood",
-                    value: 3,
-                },
-            ],
+            dropdownList: dropdownList,
         })}
       
         ${Dropdown({
@@ -184,17 +166,17 @@ const taxSelected = $("#tax");
 $("#filter_item").on("change", function () {
     let selectedVal = $(this).find(":selected").val();
 
-    const item = product.find((item) => item.item_id == selectedVal);
+    const item = product.find((item) => item.id == selectedVal);
 
     const formValues = getFormValues();
     rowData = {
         ...rowData,
         ...formValues,
         nama_barang: item.nama_barang,
-        satuan: item.unit,
+        satuan: item.satuan,
         price: item.harga,
         jenis: item.jenis,
-        item_id: item.item_id,
+        id: item.id,
     };
 
     rowData = setTotalItem(rowData);
@@ -266,8 +248,8 @@ const save = () => {
     }
 
     dataItem.forEach((item) => {
-        if (rowData.item_id == productTemp);
-        else if (item.item_id == rowData.item_id) {
+        if (rowData.id == productTemp);
+        else if (item.id == rowData.id) {
             validation = {
                 isValidate: false,
                 message: "Item sudah terdapat dalam list tabel!",
@@ -281,9 +263,7 @@ const save = () => {
             dataItem.push(rowData);
             tableItem.rows.add([rowData]).draw();
         } else {
-            objIndex = dataItem.findIndex(
-                (obj) => obj.item_id == rowData.item_id
-            );
+            objIndex = dataItem.findIndex((obj) => obj.id == rowData.id);
             if (objIndex < 0) return;
             dataItem[objIndex] = rowData;
             tableItem.row(objIndex).data(rowData).draw();
@@ -309,7 +289,7 @@ const getCurrentItem = (id) => {
     let currentItem;
 
     for (const item of dataItem) {
-        if (item.item_id == id) currentItem = item;
+        if (item.id == id) currentItem = item;
     }
 
     return currentItem;
@@ -323,19 +303,19 @@ const edit = (id) => {
     $(modalProceedBtnId).text("Ubah");
     $("#purchaseqty").val(currentItem.jumlah);
     $(`option[value=${currentItem.tax}]`).prop("selected", true);
-    $(`option[value=${currentItem.item_id}]`).prop("selected", true);
-    const item = product.find((item) => item.item_id == id);
+    $(`option[value=${currentItem.id}]`).prop("selected", true);
+    const item = product.find((item) => item.id == id);
     productTemp = id;
     rowData = {
         ...rowData,
         nama_barang: item.nama_barang,
-        satuan: item.unit,
+        satuan: item.satuan,
         price: item.harga,
         jumlah: currentItem.jumlah,
         tax: currentItem.tax,
         netamount: currentItem.netamount,
         jenis: item.jenis,
-        item_id: item.item_id,
+        id: item.id,
     };
 
     setTotalItem(rowData);
@@ -386,7 +366,7 @@ const destroy = (id) => {
                         "button"
                     );
 
-                    objIndex = dataItem.findIndex((obj) => obj.item_id == id);
+                    objIndex = dataItem.findIndex((obj) => obj.id == id);
 
                     if (objIndex < 0) {
                         Toast({
