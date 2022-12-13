@@ -63,7 +63,7 @@ const tableItem = initializeDatatablesFromArray(
                     ${Button({
                         text: "Hapus",
                         color: "danger btn-sm",
-                        onclick: `destroy(${id})`,
+                        onclick: `destroy(${item.item_id})`,
                     })}
                 `;
             },
@@ -366,4 +366,59 @@ const resetRowDataValues = () => {
         jenis: "",
         price: "0",
     };
+};
+
+const destroy = (id) => {
+    Toast({
+        timeout: 5000,
+        overlay: true,
+        title: "Hapus data rab",
+        message: "Apakah anda yakin?",
+        position: "center",
+        type: "question",
+        buttons: [
+            [
+                "<button><b>YES</b></button>",
+                function (instance, toast) {
+                    instance.hide(
+                        { transitionOut: "fadeOut" },
+                        toast,
+                        "button"
+                    );
+
+                    objIndex = dataItem.findIndex((obj) => obj.item_id == id);
+
+                    if (objIndex < 0) {
+                        Toast({
+                            title: "Gagal",
+                            type: "error",
+                            message: "Item Gagal ditambahkan",
+                        });
+                        return;
+                    }
+
+                    dataItem.splice(objIndex, 1);
+
+                    tableItem.row(objIndex).remove().draw();
+                    $(modalId).modal("hide");
+
+                    Toast({
+                        title: "Berhasil",
+                        message: "Item Berhasil ditambahkan",
+                    });
+                },
+                true,
+            ],
+            [
+                "<button>NO</button>",
+                function (instance, toast) {
+                    instance.hide(
+                        { transitionOut: "fadeOut" },
+                        toast,
+                        "button"
+                    );
+                },
+            ],
+        ],
+    });
 };
