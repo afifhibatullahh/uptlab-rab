@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisRab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,8 +22,12 @@ class Rab extends Controller
             ->select('nama_barang', 'harga', 'items.id', 'jenis.jenis', 'satuan.satuan')
             ->get();
 
+
+        $jenisrabs = JenisRab::all();
+
+
         $listItems =  json_encode($items);
-        return view('rab.add', \compact(['listItems']));
+        return view('rab.add', \compact(['listItems', 'jenisrabs']));
     }
     public function edit($id = null)
     {

@@ -68,5 +68,6 @@ Route::controller(LaboratoriumController::class)->group(function () {
 Route::controller(RabController::class)->group(function () {
     Route::get('/rab', 'index');
     Route::get('/rab/show/{id}', 'show');
+    Route::post('/rab/store', 'store');
     Route::delete('/rab/delete/{id}', 'delete');
 });

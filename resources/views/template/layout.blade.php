@@ -92,6 +92,7 @@
     <script src="<?= url('/js/helper/datatables.js') ?>"></script>
     <script src="<?= url('/js/helper/toast.js') ?>"></script>
     <script src="<?= url('/js/helper/modal.js') ?>"></script>
+
     @yield('script')
 </body>
 

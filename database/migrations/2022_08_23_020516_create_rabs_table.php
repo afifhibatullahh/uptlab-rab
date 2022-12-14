@@ -15,6 +15,7 @@ class CreateRabsTable extends Migration
     {
         Schema::create('rabs', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->string('jenis');
             $table->string('nomor_akun');
             $table->string('status');
