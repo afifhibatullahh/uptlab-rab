@@ -229,6 +229,11 @@ const addItem = () => {
     setTotalItem(rowData);
 };
 
+$("form").on("submit", function (e) {
+    save();
+    e.preventDefault();
+});
+
 const save = () => {
     let validation = {
         isValidate: true,
