@@ -43,12 +43,15 @@ $(document).ready(function () {
             .parent()
             .hasClass("sorting_1");
 
-        console.log(isClickedOnActionsButton);
-        // if (!isClickedOnActionsButton) {
-        //     window.location.replace(site_url + "/rab/show/" + itemId);
-        // }
+        if (!isClickedOnActionsButton) {
+            window.location.replace(site_url + "/rab/" + itemId);
+        }
     });
 });
+
+function edit(id) {
+    location.href = `${site_url}/rab/edit/${id}`;
+}
 
 const getCurrentrab = (id) => {
     let currentrab;

@@ -7,7 +7,19 @@ const modalTitleId = "#modal-title";
 const modalProceedBtnId = "#modal-proceed-btn";
 const modalContainerId = "#modal-rabdetail";
 
-const dataItem = [];
+const dataItem =
+    rabdetails.map((item) => {
+        return {
+            nama_barang: item.nama_barang,
+            jumlah: item.qty,
+            satuan: item.satuan,
+            price: item.harga_satuan,
+            netamount: item.netamount,
+            tax: item.pajak,
+            jenis: item.jenis,
+            id: item.id_item,
+        };
+    }) ?? [];
 
 const product = listItems;
 
@@ -285,7 +297,6 @@ const save = () => {
             message: validation.message,
         });
     }
-    console.log(dataItem);
 };
 
 const getCurrentItem = (id) => {
@@ -301,7 +312,6 @@ const getCurrentItem = (id) => {
 const edit = (id) => {
     const currentItem = getCurrentItem(id);
 
-    console.log(currentItem);
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
     $("#purchaseqty").val(currentItem.jumlah);
@@ -322,7 +332,6 @@ const edit = (id) => {
     };
 
     setTotalItem(rowData);
-    console.log(rowData);
     // clearValidationError();
 };
 

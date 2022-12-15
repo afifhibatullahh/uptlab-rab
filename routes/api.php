@@ -69,5 +69,7 @@ Route::controller(RabController::class)->group(function () {
     Route::get('/rab', 'index');
     Route::get('/rab/show/{id}', 'show');
     Route::post('/rab/store', 'store');
+    Route::post('/rab/exportrab', 'exportRab');
+    Route::patch('/rab/update/{id}', 'update');
     Route::delete('/rab/delete/{id}', 'delete');
 });

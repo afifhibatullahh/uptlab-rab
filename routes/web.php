@@ -53,6 +53,7 @@ Route::controller(Rab::class)->group(function () {
     Route::get('/rab', 'index');
     Route::get('/rab/add', 'add');
     Route::get('/rab/{id}', 'show');
+    Route::get('/rab/edit/{id}', 'edit');
 });
 
 Route::controller(PaketRab::class)->group(function () {
