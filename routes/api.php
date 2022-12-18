@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\JenisItemController;
 use App\Http\Controllers\Api\JenisRabController;
 use App\Http\Controllers\Api\LaboratoriumController;
+use App\Http\Controllers\Api\PaketRabController;
 use App\Http\Controllers\Api\RabController;
 use App\Http\Controllers\Api\SatuanController;
 use Illuminate\Http\Request;
@@ -72,4 +73,13 @@ Route::controller(RabController::class)->group(function () {
     Route::post('/rab/exportrab', 'exportRab');
     Route::patch('/rab/update/{id}', 'update');
     Route::delete('/rab/delete/{id}', 'delete');
+});
+
+Route::controller(PaketRabController::class)->group(function () {
+    Route::get('/paketrab', 'index');
+    Route::get('/paketrab/show/{id}', 'show');
+    Route::post('/paketrab/store', 'store');
+    Route::post('/paketrab/exportpaketrab', 'exportpaketrab');
+    Route::patch('/paketrab/update/{id}', 'update');
+    Route::delete('/paketrab/delete/{id}', 'delete');
 });

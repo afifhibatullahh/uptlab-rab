@@ -57,6 +57,7 @@ Route::controller(Rab::class)->group(function () {
 });
 
 Route::controller(PaketRab::class)->group(function () {
-    Route::get('/paket', 'index');
-    Route::get('/paket/{id}', 'show');
+    Route::get('/paketrab', 'index');
+    Route::get('/paketrab/add/', 'add');
+    Route::get('/paketrab/{id}', 'show');
 });

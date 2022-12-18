@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="<?= url('/css/iziToast.min.css') ?>">
     <!-- DataTables -->
     <link rel="stylesheet" href="<?= url('/css/dataTables.bootstrap4.css') ?>">
+
+    @yield('css')
 </head>
 
 <body class="vertical light collapsed">
