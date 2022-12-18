@@ -16,12 +16,15 @@ class CreateRabsTable extends Migration
         Schema::create('rabs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('jenis');
+            $table->string('jenis_rab');
             $table->string('nomor_akun');
+
+            $table->integer('laboratorium');
+
             $table->string('status');
             $table->date('waktu_pelaksanaan');
 
-            $table->integer('jumlah');
+            $table->double('jumlah');
             $table->timestamps();
         });
     }

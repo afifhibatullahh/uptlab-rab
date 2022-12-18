@@ -69,7 +69,7 @@ class Rab extends Controller
             ->join('jenisrab', 'rabs.jenis', '=', 'jenisrab.id')
             ->select('rabs.*', 'jenisrab.jenisrab as jenis',)
             ->where('rabs.id', $id)
-            ->get();
+            ->first();
 
         $rabdetail = DB::table('rabdetails')
             ->join('items', 'items.id', '=', 'rabdetails.id_item')

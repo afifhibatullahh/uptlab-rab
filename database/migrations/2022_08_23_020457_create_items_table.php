@@ -17,11 +17,11 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->string('nama_barang');
             $table->string('spesifikasi');
-            $table->string('satuan',11);
-            $table->integer('harga');
+            $table->string('satuan', 11);
+            $table->double('harga_satuan');
             $table->string('sumber');
             $table->string('gambar');
-            $table->string('jenis');
+            $table->string('jenis_item');
             $table->timestamps();
         });
     }

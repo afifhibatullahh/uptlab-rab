@@ -15,13 +15,10 @@ class CreatePaketsTable extends Migration
     {
         Schema::create('pakets', function (Blueprint $table) {
             $table->id();
-            $table->string('jenis');
+            $table->string('title');
             $table->string('nomor_akun');
-            $table->string('status');
+            $table->integer('jenis_pengadaan');
             $table->date('waktu_pelaksanaan');
-            $table->integer('total_harga');
-            $table->integer('ppn');
-            $table->integer('total_rab');
             $table->timestamps();
         });
     }

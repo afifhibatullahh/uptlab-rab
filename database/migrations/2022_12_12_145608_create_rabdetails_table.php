@@ -14,12 +14,11 @@ class CreateRabdetailsTable extends Migration
     public function up()
     {
         Schema::create('rabdetails', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('rab_id_ref');
             $table->foreign('rab_id_ref')->references('id')->on('rabs');
             $table->unsignedBigInteger('id_item');
             $table->foreign('id_item')->references('id')->on('items');
-            $table->float('netamount');
+            $table->double('jumlah_harga');
             $table->string('pajak');
             $table->integer('qty');
             $table->string('satuan');

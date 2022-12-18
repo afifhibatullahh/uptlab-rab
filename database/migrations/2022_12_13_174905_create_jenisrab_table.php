@@ -13,9 +13,9 @@ class CreateJenisrabTable extends Migration
      */
     public function up()
     {
-        Schema::create('jenisrab', function (Blueprint $table) {
+        Schema::create('jenis_rab', function (Blueprint $table) {
             $table->id();
-            $table->string('jenisrab');
+            $table->string('jenis');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateJenisrabTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jenisrab');
+        Schema::dropIfExists('jenis_rab');
     }
 }

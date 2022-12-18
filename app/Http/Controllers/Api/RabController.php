@@ -190,11 +190,11 @@ class RabController extends Controller
             $sheet->setCellValue('A1', 'Rencana Anggaran Belanja (RAB)');
 
             $sheet->setCellValue('A3', 'Judul Pengadaan :');
-            $sheet->setCellValue('B3', $rab[0]['title']);
+            $sheet->setCellValue('B3', $rab['title']);
             $sheet->setCellValue('A4', 'Nomor Akun :');
-            $sheet->setCellValue('B4', $rab[0]['nomor_akun']);
+            $sheet->setCellValue('B4', $rab['nomor_akun']);
             $sheet->setCellValue('A5', 'Jenis Pengadaan :');
-            $sheet->setCellValue('B5', $rab[0]['jenis']);
+            $sheet->setCellValue('B5', $rab['jenis']);
 
             $sheet->setCellValue('C7', 'No');
             $sheet->setCellValue('D7', 'Nama Barang');
@@ -272,11 +272,11 @@ class RabController extends Controller
 
 
             $writer = new Xlsx($spreadsheet);
-            $writer->save($rab[0]['title'] . '_' . $rab[0]['nomor_akun'] . '.xlsx');
+            $writer->save($rab['title'] . '_' . $rab['nomor_akun'] . '.xlsx');
         } catch (\Error $e) {
             return  response()->json(['message' => $e->getMessage(), 'status' => 400], 400);
         }
 
-        return  response()->json(['data' => $rab[0]['title'] . '_' . $rab[0]['nomor_akun'] . '.xlsx', 'message' => 'Export RAB Berhasil', 'status' => 200], 200);
+        return  response()->json(['data' => $rab['title'] . '_' . $rab['nomor_akun'] . '.xlsx', 'message' => 'Export RAB Berhasil', 'status' => 200], 200);
     }
 }

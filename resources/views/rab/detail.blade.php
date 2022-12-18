@@ -9,13 +9,13 @@
                 <div class="row align-items-center mb-4">
                     <div class="col">
                         <h2 class="h5 page-title"><small class="text-muted text-uppercase">Nomor
-                                Akun</small><br />{{$rab[0]->nomor_akun}}
+                                Akun</small><br />{{$rab->nomor_akun}}
                         </h2>
                     </div>
                     <div class="col-auto">
                         <button type="button" onclick="exportExcel()" class="btn btn-secondary"> <i
                                 class="fe fe-download fe-16"></i></button>
-                        <a href="edit/{{$rab[0]->id}}" class="btn btn-primary">Edit</a>
+                        <a href="edit/{{$rab->id}}" class="btn btn-primary">Edit</a>
                     </div>
                 </div>
                 <div class="card shadow">
@@ -27,21 +27,21 @@
                             <div class="col-md-7">
                                 <p class="small text-muted text-uppercase">Judul Pengadaan</p>
                                 <p>
-                                    <strong>{{$rab[0]->title}}</strong>
+                                    <strong>{{$rab->title}}</strong>
                                 </p>
                                 <p>
                                     <span class="small text-muted text-uppercase">Jenis Pengadaan</span><br />
-                                    <strong>{{$rab[0]->jenis}}</strong>
+                                    <strong>{{$rab->jenis}}</strong>
                                 </p>
                             </div>
                             <div class="col-md-5">
                                 <p class="small text-muted text-uppercase">Status</p>
                                 <p>
-                                    <strong>{{$rab[0]->status}}</strong>
+                                    <strong>{{$rab->status}}</strong>
                                 </p>
                                 <p>
                                     <small class="small text-muted text-uppercase">Waktu Pelaksanaan</small><br />
-                                    <strong>{{$rab[0]->waktu_pelaksanaan}}</strong>
+                                    <strong>{{$rab->waktu_pelaksanaan}}</strong>
                                 </p>
                             </div>
                         </div> <!-- /.row -->

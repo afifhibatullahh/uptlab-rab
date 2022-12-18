@@ -6,8 +6,8 @@ async function exportExcel() {
         success: function (response) {
             if (response.status >= 200 && response.status < 300) {
                 Toast({ title: "Berhasil", message: response.message });
-                console.log(`${site_url}/${response.data}`);
                 location.href = `${site_url}/${response.data}`;
+                // console.log(`${site_url}/${response.data}`);
             }
 
             if (response.status >= 400 && response.status < 500) {
