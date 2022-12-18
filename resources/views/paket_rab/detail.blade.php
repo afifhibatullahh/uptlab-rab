@@ -124,7 +124,7 @@
 
 @section('script'); ?>
 <script>
-
+    const dataPaket = <?= $paketToJson; ?>;
 </script>
 <script src="{{url('js/features/paketrabshow.js')}}"></script>
 <script src="{{url('js/features/exportExcel.js')}}"></script>

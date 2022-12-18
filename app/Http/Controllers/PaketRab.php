@@ -32,6 +32,38 @@ class PaketRab extends Controller
         return view('paket_rab.add', \compact(['rabs', 'jenisrabs', 'listRabs']));
     }
 
+
+
+    public function edit($id = null)
+    {
+        $paketrab = DB::table('pakets')
+            ->select('*')
+            ->where('pakets.id', $id)
+            ->first();
+
+        $paketrabdetail = DB::table('paket_rab_details')
+            ->join('rabs', 'rabs.id', '=', 'paket_rab_details.id_rab')
+            ->join('jenis_rab', 'jenis_rab.id', '=', 'rabs.jenis_rab')
+            ->join('laboratorium', 'laboratorium.id', '=', 'rabs.laboratorium')
+            ->select('rabs.*', 'jenis_rab.jenis as jenis_rab', 'laboratorium.laboratorium as laboratorium')
+            ->where('id_paket', $id)
+            ->get()->toArray();
+
+        $rabs = DB::table('rabs')
+            ->select('*')
+            ->get()->toArray();
+
+        $jenisrabs = DB::table('jenis_rab')
+            ->select('*')
+            ->get()->toArray();
+
+        $listRabs =  json_encode($rabs);
+        $paketrabdetail =  json_encode($paketrabdetail);
+
+        return view('paket_rab.edit',  \compact(['paketrab', 'paketrabdetail', 'listRabs', 'paketrabdetail', 'jenisrabs']));
+    }
+
+
     public function show($id = null)
     {
 
@@ -75,6 +107,11 @@ class PaketRab extends Controller
                 $paketToJson[$item->jenis_item][] = $item;
             }
         }
+
+        $paketToJson = \json_encode([
+            'paketrab' => $paket,
+            'paketrabdetail' => $paketToJson,
+        ]);
 
         return view('paket_rab.detail', \compact(['paket', 'rabdetail', 'filteredItems', 'paketToJson']));
     }

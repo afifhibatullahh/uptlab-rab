@@ -38,5 +38,4 @@ $(document).ready(function () {
             table.order([groupColumn, "asc"]).draw();
         }
     });
-    console.log(table);
 });

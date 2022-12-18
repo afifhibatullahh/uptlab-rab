@@ -79,7 +79,7 @@ Route::controller(PaketRabController::class)->group(function () {
     Route::get('/paketrab', 'index');
     Route::get('/paketrab/show/{id}', 'show');
     Route::post('/paketrab/store', 'store');
-    Route::post('/paketrab/exportpaketrab', 'exportpaketrab');
+    Route::post('/paketrab/exportpaketrab', 'exportPaketRab');
     Route::patch('/paketrab/update/{id}', 'update');
     Route::delete('/paketrab/delete/{id}', 'delete');
 });

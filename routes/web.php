@@ -60,4 +60,5 @@ Route::controller(PaketRab::class)->group(function () {
     Route::get('/paketrab', 'index');
     Route::get('/paketrab/add/', 'add');
     Route::get('/paketrab/{id}', 'show');
+    Route::get('/paketrab/edit/{id}', 'edit');
 });

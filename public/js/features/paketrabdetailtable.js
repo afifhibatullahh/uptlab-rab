@@ -22,7 +22,16 @@ dropdownList = listRabs.map((item) => {
     };
 });
 
-const dataRab = [];
+const dataRab =
+    paketrabdetails.map((item) => {
+        return {
+            ...item,
+            tanggal: item.waktu_pelaksanaan,
+        };
+    }) ?? [];
+
+console.log(dataRab);
+
 const tableItem = initializeDatatablesFromArray(
     tableId,
     [
