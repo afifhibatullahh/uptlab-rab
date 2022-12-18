@@ -17,7 +17,7 @@ class Item extends Controller
         $satuan = DB::table('satuan')
             ->select('satuan as label', 'id as value')
             ->get();
-        $jenis = DB::table('jenis')
+        $jenis = DB::table('jenis_item')
             ->select('jenis as label', 'id as value')
             ->get();
 

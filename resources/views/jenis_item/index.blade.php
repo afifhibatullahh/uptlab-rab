@@ -19,7 +19,7 @@
                     <div class="col-md-12">
                         <div class="card shadow">
                             <div class="card-body">
-                                <table class="table datatables" id="table-jenis" style="cursor: pointer;"></table>
+                                <table class="table datatables" id="table-jenisitem" style="cursor: pointer;"></table>
                             </div>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Modal -->
-    <div id="modal-jenis"></div>
+    <div id="modal-jenisitem"></div>
 </main>
 
 @endSection
@@ -38,5 +38,5 @@
 @section('script'); ?>
 <script>
 </script>
-<script src="{{url('js/features/jenis.js')}}"></script>
+<script src="{{url('js/features/jenisitem.js')}}"></script>
 @endSection

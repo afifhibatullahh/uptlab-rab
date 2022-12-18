@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ItemController;
-use App\Http\Controllers\Api\JenisController;
+use App\Http\Controllers\Api\JenisItemController;
 use App\Http\Controllers\Api\JenisRabController;
 use App\Http\Controllers\Api\LaboratoriumController;
 use App\Http\Controllers\Api\RabController;
@@ -41,12 +41,12 @@ Route::controller(SatuanController::class)->group(function () {
     Route::delete('/satuan/delete/{id}', 'delete');
 });
 
-Route::controller(JenisController::class)->group(function () {
-    Route::get('/jenis', 'index');
-    Route::get('/jenis/show/{id}', 'show');
-    Route::post('/jenis/store', 'store');
-    Route::patch('/jenis/update/{id}', 'update');
-    Route::delete('/jenis/delete/{id}', 'delete');
+Route::controller(JenisItemController::class)->group(function () {
+    Route::get('/jenisitem', 'index');
+    Route::get('/jenisitem/show/{id}', 'show');
+    Route::post('/jenisitem/store', 'store');
+    Route::patch('/jenisitem/update/{id}', 'update');
+    Route::delete('/jenisitem/delete/{id}', 'delete');
 });
 
 Route::controller(JenisRabController::class)->group(function () {

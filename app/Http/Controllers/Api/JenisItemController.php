@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Jenis;
+use App\Models\JenisItem;
 use Illuminate\Http\Request;
 
-class JenisController extends Controller
+class JenisItemController extends Controller
 {
     public function index()
     {
-        $jenis = Jenis::all();
+        $jenis = JenisItem::all();
 
 
         //return collection of items as a resource
@@ -20,7 +20,7 @@ class JenisController extends Controller
     public function store(Request $request)
     {
         //create item
-        $jenis = Jenis::create([
+        $jenis = JenisItem::create([
             'jenis'     => $request->jenis,
         ]);
 
@@ -34,7 +34,7 @@ class JenisController extends Controller
     public function update(Request $request, $id)
     {
         //create item
-        $jenis = Jenis::where('id', $id)->first();
+        $jenis = JenisItem::where('id', $id)->first();
 
         //return response
         if ($jenis) {
@@ -49,7 +49,7 @@ class JenisController extends Controller
     public function delete($id)
     {
         //create item
-        $jenis = Jenis::find($id);
+        $jenis = JenisItem::find($id);
 
         //return response
         if ($jenis) {

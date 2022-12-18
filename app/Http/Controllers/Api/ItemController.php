@@ -15,7 +15,6 @@ class ItemController extends Controller
         //get items
         $item = Item::all();
 
-
         //return collection of items as a resource
         return new ItemResource($item, 200, 'List Data item',);
     }
@@ -48,9 +47,9 @@ class ItemController extends Controller
             'gambar'     => $imageName,
             'nama_barang'     => $request->nama_barang,
             'satuan'   => $request->satuan,
-            'jenis'   => $request->jenis,
+            'jenis_item'   => $request->jenis_item,
             'sumber'   => $request->sumber,
-            'harga'   => $request->harga,
+            'harga_satuan'   => $request->harga_satuan,
             'spesifikasi'   => $request->spesifikasi,
         ]);
 
@@ -68,9 +67,9 @@ class ItemController extends Controller
                 'gambar'     => 'default.jpg',
                 'nama_barang'     => $request->nama_barang,
                 'satuan'   => $request->satuan,
-                'item'   => $request->item,
                 'sumber'   => $request->sumber,
-                'harga'   => $request->harga,
+                'jenis_item'   => $request->jenis_item,
+                'harga_satuan'   => $request->harga_satuan,
                 'spesifikasi'   => $request->spesifikasi,
             ]);
             return  response()->json(['data' => $item, 'message' => 'Data berhasil diubah', 'status' => 200], 200);

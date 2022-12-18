@@ -20,8 +20,8 @@ class RabController extends Controller
     public function index()
     {
         $rab = DB::table('rabs')
-            ->join('jenisrab', 'rabs.jenis', '=', 'jenisrab.id')
-            ->select('rabs.id', 'nomor_akun', 'status', 'jenisrab.jenisrab as jenis', 'waktu_pelaksanaan')
+            ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
+            ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan')
             ->get();
 
         //return collection of items as a resource
@@ -42,8 +42,9 @@ class RabController extends Controller
             try {
                 $rabCreated = Rab::create([
                     'title' => $rab['title'],
-                    'jenis' => $rab['jenis'],
+                    'jenis_rab' => $rab['jenis_rab'],
                     'nomor_akun' => $rab['nomor_akun'],
+                    'laboratorium' => $rab['laboratorium'],
                     'waktu_pelaksanaan' => $rab['waktu_pelaksanaan'],
                     'jumlah' => $rab['jumlah'],
                 ]);
@@ -56,9 +57,9 @@ class RabController extends Controller
             foreach ($rabdetail as $data) {
                 $newDetail[] = [
                     'id_item' => $data['id'],
-                    'netamount' => $data['netamount'],
+                    'jumlah_harga' => $data['jumlah_harga'],
                     'pajak' => $data['tax'],
-                    'qty' => $data['jumlah'],
+                    'qty' => $data['qty'],
                     'satuan' => $data['satuan'],
                     'rab_id_ref' => $idrab,
                 ];
@@ -98,7 +99,8 @@ class RabController extends Controller
 
                 $rabCreated = Rab::where('id', $id)->update([
                     'title' => $rab['title'],
-                    'jenis' => $rab['jenis'],
+                    'jenis_rab' => $rab['jenis_rab'],
+                    'laboratorium' => $rab['laboratorium'],
                     'nomor_akun' => $rab['nomor_akun'],
                     'waktu_pelaksanaan' => $rab['waktu_pelaksanaan'],
                     'jumlah' => $rab['jumlah'],
@@ -111,9 +113,9 @@ class RabController extends Controller
             foreach ($rabdetail as $data) {
                 $newDetail[] = [
                     'id_item' => $data['id'],
-                    'netamount' => $data['netamount'],
+                    'jumlah_harga' => $data['jumlah_harga'],
                     'pajak' => $data['tax'],
-                    'qty' => $data['jumlah'],
+                    'qty' => $data['qty'],
                     'satuan' => $data['satuan'],
                     'rab_id_ref' => $id,
                 ];
@@ -185,7 +187,11 @@ class RabController extends Controller
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
 
-            $sheet->getColumnDimension('A')->setAutoSize(true);
+
+            foreach (range('A', 'K') as $columnID) {
+                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
+
 
             $sheet->setCellValue('A1', 'Rencana Anggaran Belanja (RAB)');
 
@@ -194,7 +200,7 @@ class RabController extends Controller
             $sheet->setCellValue('A4', 'Nomor Akun :');
             $sheet->setCellValue('B4', $rab['nomor_akun']);
             $sheet->setCellValue('A5', 'Jenis Pengadaan :');
-            $sheet->setCellValue('B5', $rab['jenis']);
+            $sheet->setCellValue('B5', $rab['jenis_rab']);
 
             $sheet->setCellValue('C7', 'No');
             $sheet->setCellValue('D7', 'Nama Barang');
@@ -248,9 +254,9 @@ class RabController extends Controller
                 $sheet->setCellValue('F' . $row, $detail['qty']);
                 $sheet->setCellValue('G' . $row, $detail['satuan']);
                 $sheet->setCellValue('H' . $row, 'Rp. ' . $detail['harga_satuan']);
-                $sheet->setCellValue('I' . $row, 'Rp. ' . $detail['netamount']);
+                $sheet->setCellValue('I' . $row, 'Rp. ' . $detail['jumlah_harga']);
                 $sheet->setCellValue('J' . $row, $detail['sumber']);
-                $sheet->setCellValue('K' . $row, $detail['jenis']);
+                $sheet->setCellValue('K' . $row, $detail['jenis_item']);
 
                 $sheet->getStyle('C' . $row . ':K' . $row)->applyFromArray($styleBorders);
                 $row++;

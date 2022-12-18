@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JenisRab extends Model
+class JenisItem extends Model
 {
     use HasFactory;
-    protected $table = 'jenis_rab';
+    protected $table = 'jenis_item';
     protected $guarded = [
         'id'
     ];

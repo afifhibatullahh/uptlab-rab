@@ -12,7 +12,6 @@ class JenisRabController extends Controller
     {
         $jenisrab = JenisRab::all();
 
-
         //return collection of items as a resource
         return  response()->json(['data' => $jenisrab, 'message' => 'List Data JenisRab', 'status' => 200], 200);
     }
@@ -21,7 +20,7 @@ class JenisRabController extends Controller
     {
         //create item
         $jenisrab = JenisRab::create([
-            'jenisrab'     => $request->jenisrab,
+            'jenis'     => $request->jenis,
         ]);
 
         //return response
@@ -39,7 +38,7 @@ class JenisRabController extends Controller
         //return response
         if ($jenisrab) {
             $jenisrab->update([
-                'jenisrab' => $request->jenisrab
+                'jenis' => $request->jenis
             ]);
             return  response()->json(['data' => $jenisrab, 'message' => 'Data berhasil diubah', 'status' => 200], 200);
         } else

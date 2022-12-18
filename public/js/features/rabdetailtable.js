@@ -11,12 +11,12 @@ const dataItem =
     rabdetails.map((item) => {
         return {
             nama_barang: item.nama_barang,
-            jumlah: item.qty,
+            qty: item.qty,
             satuan: item.satuan,
-            price: item.harga_satuan,
-            netamount: item.netamount,
+            harga_satuan: item.harga_satuan,
+            jumlah_harga: item.jumlah_harga,
             tax: item.pajak,
-            jenis: item.jenis,
+            jenis_item: item.jenis_item,
             id: item.id_item,
         };
     }) ?? [];
@@ -32,12 +32,12 @@ dropdownList = product.map((item) => {
 
 let rowData = {
     nama_barang: "",
-    jumlah: "",
+    qty: "",
     satuan: "",
-    price: "0",
-    netamount: "",
+    harga_satuan: "0",
+    jumlah_harga: "",
     tax: "",
-    jenis: "",
+    jenis_item: "",
 };
 
 const tableItem = initializeDatatablesFromArray(
@@ -66,19 +66,19 @@ const tableItem = initializeDatatablesFromArray(
             },
         },
         { data: "nama_barang", title: "Nama Barang" },
-        { data: "jumlah", title: "Jumlah" },
+        { data: "qty", title: "Jumlah" },
         { data: "satuan", title: "Satuan" },
         {
-            data: "price",
+            data: "harga_satuan",
             title: "Harga Satuan(Rp)",
             render: $.fn.dataTable.render.number(".", ",", 2),
         },
         {
-            data: "netamount",
+            data: "jumlah_harga",
             title: "Jumlah Harga",
             render: $.fn.dataTable.render.number(".", ",", 2),
         },
-        { data: "jenis", title: "Jenis Barang" },
+        { data: "jenis_item", title: "Jenis Item" },
         { data: "tax", title: "Pajak (%)" },
     ],
     dataItem
@@ -155,21 +155,21 @@ $("#form-item-left-section").append(`
     `);
 
 $("#form-item-right-section").append(`
-        ${InputField({
+        ${InputFieldAdorment({
             title: "Qty",
             type: "number",
-            name: "jumlah",
-            id: "purchaseqty",
+            name: "qty",
+            idAdorment: "satuanAdorment",
         })}
-        <h6>Harga Barang : <span id="price">0</span></h6>
+        <h6>Harga Barang : <span id="harga_satuan">0</span></h6>
         <h6>Pembelian : <span id="pembelian">0</span></h6>
         <h6>Pajak : <span id="taxtotal">0</span></h6>
-        <h5>Total Harga : <span id="netamount">0</span></h5>
+        <h5>Total Harga : <span id="jumlah_harga">0</span></h5>
     `);
 
 const totalPajak = $("#taxtotal");
-const totalAmount = $("#netamount");
-const purchaseQty = $("#purchaseqty");
+const totalAmount = $("#jumlah_harga");
+const qty = $("#qty");
 const pembelian = $("#pembelian");
 const taxSelected = $("#tax");
 
@@ -184,18 +184,19 @@ $("#filter_item").on("change", function () {
         ...formValues,
         nama_barang: item.nama_barang,
         satuan: item.satuan,
-        price: item.harga,
-        jenis: item.jenis,
+        harga_satuan: item.harga_satuan,
+        jenis_item: item.jenis,
         id: item.id,
     };
 
+    console.log(rowData);
     rowData = setTotalItem(rowData);
 });
 
-purchaseQty.on("input", function (e) {
+qty.on("input", function (e) {
     const qtyVal = $(this).val();
 
-    rowData = { ...rowData, jumlah: Number(qtyVal) };
+    rowData = { ...rowData, qty: Number(qtyVal) };
 
     rowData = setTotalItem(rowData);
 });
@@ -209,23 +210,24 @@ taxSelected.on("change", function () {
 });
 
 const setTotalItem = (datas) => {
-    $("#price").html(`${datas.price}`);
-    const totalPembelian = Number(datas.price ?? 0) * Number(datas.jumlah);
+    $("#harga_satuan").text(`${datas.harga_satuan}`);
+    $("#satuanAdorment").text(`${datas.satuan}`);
+    const totalPembelian = Number(datas.harga_satuan ?? 0) * Number(datas.qty);
 
-    pembelian.html(`${totalPembelian}`);
+    pembelian.text(`${totalPembelian}`);
 
     const pajak =
         datas.tax == 0 ? 0 : (Number(datas.tax) / 100) * totalPembelian;
 
-    totalPajak.html(`${pajak}`);
+    totalPajak.text(`${pajak}`);
 
-    const amount = totalPembelian - pajak;
+    const amount = totalPembelian + pajak;
 
-    totalAmount.html(`${amount}`);
+    totalAmount.text(`${amount}`);
 
     return (datas = {
         ...datas,
-        netamount: amount,
+        jumlah_harga: amount,
     });
 };
 
@@ -257,7 +259,7 @@ const save = () => {
         if (rowData[key] == "") {
             validation = {
                 isValidate: false,
-                message: "Item Gagal ditambahkan",
+                message: `Item Gagal ${isEdit ? "diubah" : "ditambahkan"}`,
             };
         }
     }
@@ -278,8 +280,8 @@ const save = () => {
             dataItem.push(rowData);
             tableItem.rows.add([rowData]).draw();
         } else {
-            objIndex = dataItem.findIndex((obj) => obj.id == rowData.id);
-            if (objIndex < 0) return;
+            objIndex = dataItem.findIndex((obj) => obj.id == productTemp);
+            // if (objIndex < 0) return;
             dataItem[objIndex] = rowData;
             tableItem.row(objIndex).data(rowData).draw();
         }
@@ -287,7 +289,7 @@ const save = () => {
 
         Toast({
             title: "Berhasil",
-            message: "Item Berhasil ditambahkan",
+            message: `Item Berhasil ${isEdit ? "diubah" : "ditambahkan"}`,
         });
         resetRowDataValues();
     } else {
@@ -314,20 +316,21 @@ const edit = (id) => {
 
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
-    $("#purchaseqty").val(currentItem.jumlah);
+    $("#qty").val(currentItem.qty);
     $(`option[value=${currentItem.tax}]`).prop("selected", true);
     $(`option[value=${currentItem.id}]`).prop("selected", true);
     const item = product.find((item) => item.id == id);
+
     productTemp = id;
     rowData = {
         ...rowData,
         nama_barang: item.nama_barang,
         satuan: item.satuan,
-        price: item.harga,
-        jumlah: currentItem.jumlah,
+        harga_satuan: item.harga_satuan,
+        qty: currentItem.qty,
         tax: currentItem.tax,
-        netamount: currentItem.netamount,
-        jenis: item.jenis,
+        jumlah_harga: currentItem.jumlah_harga,
+        jenis_item: item.jenis,
         id: item.id,
     };
 
@@ -341,7 +344,7 @@ const getFormValues = () => {
 
     const formValues = {
         nama_barang: requestBody.get("nama_barang"),
-        jumlah: requestBody.get("jumlah"),
+        qty: requestBody.get("qty"),
         tax: requestBody.get("tax"),
     };
 
@@ -351,12 +354,12 @@ const getFormValues = () => {
 const resetRowDataValues = () => {
     rowData = {
         nama_barang: "",
-        jumlah: "",
+        qty: "",
         satuan: "",
-        netamount: "",
+        jumlah_harga: "",
         tax: "",
-        jenis: "",
-        price: "0",
+        jenis_item: "",
+        harga_satuan: "0",
     };
 };
 

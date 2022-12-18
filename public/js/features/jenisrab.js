@@ -38,7 +38,7 @@ $(document).ready(function () {
                     `;
             },
         },
-        { data: "jenisrab", title: "Jenis RAB" },
+        { data: "jenis", title: "Jenis RAB" },
     ]);
 
     // tableItem.on("click", "tr", function (event) {
@@ -82,7 +82,7 @@ $(document).ready(function () {
     );
 
     $(formId).append(`
-        ${InputField({ title: "Jenis RAB", name: "jenisrab" })}
+        ${InputField({ title: "Jenis RAB", name: "jenis" })}
         ${Button({
             text: "Tambah",
             id: modalProceedBtnId.slice(1),
@@ -149,10 +149,11 @@ const create = () => {
 
 const edit = (id) => {
     const currentjenisrab = getCurrentjenisrab(id);
+    console.log(currentjenisrab);
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
     $(formId).attr("action", updateAPI + "/" + id);
-    $("#jenisrab").val(currentjenisrab.jenisrab);
+    $("#jenis").val(currentjenisrab.jenis);
     clearValidationError();
 };
 

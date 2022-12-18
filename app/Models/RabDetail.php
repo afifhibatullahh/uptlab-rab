@@ -9,7 +9,4 @@ class RabDetail extends Model
 {
     use HasFactory;
     protected $table = 'rabdetails';
-    protected $guarded = [
-        'id'
-    ];
 }

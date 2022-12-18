@@ -40,7 +40,7 @@ $(document).ready(function () {
         },
         { data: "nama_barang", title: "Item" },
         {
-            data: "harga",
+            data: "harga_satuan",
             title: "Harga (Rp)",
             render: $.fn.dataTable.render.number(".", ",", 2),
         },
@@ -89,24 +89,21 @@ $(document).ready(function () {
 
     $("#form-item-left-section").append(`
         ${InputField({ title: "Nama", name: "nama_barang" })}
-        ${Textarea({ title: "Spesifikasi", name: "spesifikasi" })}
         ${InputField({
             title: "Harga",
             type: "number",
-            id: "custom-money",
-            name: "harga",
+            name: "harga_satuan",
         })}
         ${Dropdown({
             title: "Satuan",
             name: "satuan",
             dropdownList: listSatuan,
         })}
-        ${Button({
-            text: "Tambah",
-            id: modalProceedBtnId.slice(1),
-            onclick: "save()",
+        ${Dropdown({
+            title: "Jenis",
+            name: "jenis_item",
+            dropdownList: listJenis,
         })}
-        ${Button({ text: "Cancel", dataDismiss: "modal", color: "danger" })}
     `);
 
     $("#form-item-right-section").append(`
@@ -114,11 +111,7 @@ $(document).ready(function () {
             title: "Sumber",
             name: "sumber",
         })}
-        ${Dropdown({
-            title: "Jenis",
-            name: "jenis",
-            dropdownList: listJenis,
-        })}
+        ${Textarea({ title: "Spesifikasi", name: "spesifikasi" })}
         ${ImagePreview({ folder: "item" })}
         ${InputField({
             title: "Gambar",
@@ -126,6 +119,12 @@ $(document).ready(function () {
             type: "file",
             onchange: "previewImage(this)",
         })}
+        ${Button({
+            text: "Tambah",
+            id: modalProceedBtnId.slice(1),
+            onclick: "save()",
+        })}
+        ${Button({ text: "Cancel", dataDismiss: "modal", color: "danger" })}
     `);
 });
 
@@ -160,7 +159,6 @@ const save = () => {
     const requestBody = new FormData(form);
     const isEdit = $(modalProceedBtnId).text() === "Ubah";
 
-    console.log(requestBody);
     if (isEdit) requestBody.append("_method", "PATCH");
 
     ajax({
@@ -210,14 +208,15 @@ const create = () => {
 
 const edit = (id) => {
     const currentItem = getCurrentItem(id);
+    console.log(currentItem);
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
     $("#nama_barang").val(currentItem.nama_barang);
     $("#spesifikasi").val(currentItem.spesifikasi);
-    $("#harga").val(currentItem.harga);
+    $("#harga_satuan").val(currentItem.harga_satuan);
     $("#sumber").val(currentItem.sumber);
     $(`option[value=${currentItem.satuan}]`).prop("selected", true);
-    $(`option[value=${currentItem.jenis}]`).prop("selected", true);
+    $(`option[value=${currentItem.jenis_item}]`).prop("selected", true);
     $(formId).attr("action", updateAPI + "/" + id);
     $("#image-preview").attr(
         "src",

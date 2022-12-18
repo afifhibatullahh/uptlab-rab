@@ -1,16 +1,16 @@
 const menuContext = "Jenis Barang";
-const tableId = "#table-jenis";
-const formId = "#form-jenis";
-const indexAPI = `${site_url_api}/jenis`;
-const storeAPI = `${site_url_api}/jenis/store`;
-const deleteAPI = `${site_url_api}/jenis/delete`;
-const updateAPI = `${site_url_api}/jenis/update`;
+const tableId = "#table-jenisitem";
+const formId = "#form-jenisitem";
+const indexAPI = `${site_url_api}/jenisitem`;
+const storeAPI = `${site_url_api}/jenisitem/store`;
+const deleteAPI = `${site_url_api}/jenisitem/delete`;
+const updateAPI = `${site_url_api}/jenisitem/update`;
 const allItem = new Set();
 
 const modalId = "#modal";
 const modalTitleId = "#modal-title";
 const modalProceedBtnId = "#modal-proceed-btn";
-const modalContainerId = "#modal-jenis";
+const modalContainerId = "#modal-jenisitem";
 
 $(document).ready(function () {
     const tableItem = initializeDatatables(tableId, indexAPI, [

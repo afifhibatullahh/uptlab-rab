@@ -26,6 +26,39 @@ const InputField = ({
     `;
 };
 
+const InputFieldAdorment = ({
+    type = "text",
+    adorment = "pcs",
+    title = "",
+    name = "",
+    id = "",
+    idAdorment = "",
+    width = "col-12",
+    autofocus = false,
+    disabled = false,
+    onclick = "clearValidationError(this)",
+    accept = "image/jpg, image/jpeg, image/png, image/webp, image/gif",
+    onchange = "",
+} = {}) => {
+    return `
+        <div class="form-group">
+            <label for="${name}">${title}</label>
+            <div class="input-group mb-3">
+                <input type="${type}" id="${
+        id !== "" ? id : name
+    }" name="${name}" onchange="${onchange}" onclick="${onclick}" class="form-control ${
+        id === "custom-money" ? "input-money" : ""
+    }" ${autofocus ? "autofocus" : ""} ${disabled ? "disabled" : ""}
+                    accept="${type === "file" ? accept : ""}">
+                    <div class="input-group-append">
+                    <span class="input-group-text" id="${idAdorment}" >${adorment}</span>
+                  </div>
+                <div id="error-${name}" class="invalid-feedback"></div>
+            </div>
+        </div>
+    `;
+};
+
 const Radio = ({ title = "", name = "", radioList = [] } = {}) => {
     return `
         <div class="row mb-3">

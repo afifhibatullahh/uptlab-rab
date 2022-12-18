@@ -9,14 +9,15 @@ function getDataRab() {
         jumlah = 0;
     data.map((item) => {
         rabdetail.push(item);
-        jumlah += Number(item.netamount);
+        jumlah += Number(item.jumlah_harga);
     });
 
     let rab = {
         title: "",
         nomor_akun: "",
-        jenis: "",
+        jenis_rab: "",
         waktu_pelaksanaan: "",
+        laboratorium: "",
         jumlah: jumlah,
     };
     for (let data of requestBody) {

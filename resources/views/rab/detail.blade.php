@@ -23,6 +23,7 @@
                         <div class="row mb-5">
                             <div class="col-12 text-center mb-4">
                                 <h2 class="mb-0 text-uppercase">Rencana Anggaran Belanja (RAB)</h2>
+                                <p class="text-muted"> {{$rab->laboratorium}} </p>
                             </div>
                             <div class="col-md-7">
                                 <p class="small text-muted text-uppercase">Judul Pengadaan</p>
@@ -31,7 +32,7 @@
                                 </p>
                                 <p>
                                     <span class="small text-muted text-uppercase">Jenis Pengadaan</span><br />
-                                    <strong>{{$rab->jenis}}</strong>
+                                    <strong>{{$rab->jenis_rab}}</strong>
                                 </p>
                             </div>
                             <div class="col-md-5">
@@ -68,10 +69,10 @@
                                     <td> {{$item->qty}} </td>
                                     <td> {{$item->satuan}} </td>
                                     <td> {{$item->harga_satuan}} </td>
-                                    <td> {{$item->netamount}} </td>
+                                    <td> {{$item->jumlah_harga}} </td>
                                     <td> {{$item->pajak}} </td>
                                     <td> {{$item->sumber}} </td>
-                                    <td> {{$item->jenis}} </td>
+                                    <td> {{$item->jenis_item}} </td>
 
                                 </tr>
 
