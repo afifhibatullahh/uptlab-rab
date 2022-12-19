@@ -7,6 +7,7 @@ use App\Models\Laboratorium;
 use App\Models\Rab as ModelsRab;
 use App\Models\RabDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Rab extends Controller

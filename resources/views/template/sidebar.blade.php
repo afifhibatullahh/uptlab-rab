@@ -67,6 +67,7 @@
                 </ul>
             </li>
         </ul>
+        @if (Auth::user()->role == 'super admin')
         <p class="text-muted nav-heading mt-4 mb-1">
             <span>Laporan</span>
         </p>
@@ -83,18 +84,13 @@
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-                <a class="nav-link" href="<?= url('rab/laporan') ?>">
+                <a class="nav-link" href="<?= url('users') ?>">
                     <i class="fe fe-users fe-16"></i>
                     <span class="ml-3 item-text">Users</span>
                 </a>
             </li>
-            <li class="nav-item w-100">
-                <a class="nav-link" href="<?= url('rab/laporan') ?>">
-                    <i class="fe fe-user fe-16"></i>
-                    <span class="ml-3 item-text">Account</span>
-                </a>
-            </li>
         </ul>
+        @endif
 
     </nav>
 </aside>

@@ -25,9 +25,8 @@
                 <i class="fe fe-settings fe-14 mr-1"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item text-dark" style="cursor: pointer;" data-toggle="modal"
-                    data-target="#modal-settings" onclick="editSettings()">Settings</a>
-                <a class="dropdown-item" href="<?= url('api/auth/logout') ?>">Logout</a>
+                <a class="dropdown-item" href="<?= url('/account') ?>">Account</a>
+                <a class="dropdown-item" href="<?= url('/logout') ?>">Logout</a>
             </div>
         </li>
     </ul>

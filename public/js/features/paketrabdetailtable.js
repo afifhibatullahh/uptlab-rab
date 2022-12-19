@@ -1,7 +1,7 @@
 const menuContext = "Jenis RAB";
 const tableId = "#table-paketrabdetail";
 const formId = "#form-paketrabdetail";
-
+console.log("testes");
 const modalId = "#modal";
 const modalTitleId = "#modal-title";
 const modalProceedBtnId = "#modal-proceed-btn";
@@ -29,8 +29,6 @@ const dataRab =
             tanggal: item.waktu_pelaksanaan,
         };
     }) ?? [];
-
-console.log(dataRab);
 
 const tableItem = initializeDatatablesFromArray(
     tableId,
@@ -79,10 +77,11 @@ tableItem.on("click", "tr", function (event) {
 });
 
 const addRab = () => {
+    console.log("test");
     $(modalTitleId).text(`Tambah ${menuContext}`);
     $(modalProceedBtnId).text("Tambah");
     $(formId).trigger("reset");
-    resetRowDataValues();
+    resetRowDataPaket();
     setRowData(rowData);
 };
 
@@ -130,7 +129,7 @@ $("#form-item-left-section").append(`
             text: "Cancel",
             dataDismiss: "modal",
             color: "danger",
-            onclick: "resetRowDataValues()",
+            onclick: "()",
         })}
     `);
 
@@ -166,7 +165,7 @@ const setRowData = (data) => {
     };
 };
 
-const resetRowDataValues = () => {
+const resetRowDataPaket = () => {
     rowData = {
         title: "",
         jenis_rab: "",
@@ -199,7 +198,6 @@ const save = () => {
     };
 
     const isEdit = $(modalProceedBtnId).text() === "Ubah";
-    console.log(tempRab);
     dataRab.forEach((item) => {
         if (rowData.id == tempRab) console.log("tes");
         else if (item.id == rowData.id) {
@@ -227,7 +225,7 @@ const save = () => {
             title: "Berhasil",
             message: `Item Berhasil ${isEdit ? "diubah" : "ditambahkan"}`,
         });
-        resetRowDataValues();
+        resetRowDataPaket();
     } else {
         Toast({
             title: "Gagal",

@@ -181,6 +181,9 @@ class PaketRabController extends Controller
             $sheet->setCellValue('A5', 'Jenis Pengadaan :');
             $sheet->setCellValue('B5', $paketrab['jenis_pengadaan']);
 
+            foreach (range('A', 'B') as $columnID) {
+                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
 
             $i = 1;
             foreach ($paketrabdetail as $key => $paket) {

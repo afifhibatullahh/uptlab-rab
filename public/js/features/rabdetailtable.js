@@ -150,7 +150,7 @@ $("#form-item-left-section").append(`
             text: "Cancel",
             dataDismiss: "modal",
             color: "danger",
-            onclick: "resetRowDataValues()",
+            onclick: "resetRowDataRab()",
         })}
     `);
 
@@ -237,7 +237,7 @@ const addItem = () => {
     $(modalTitleId).text(`Tambah ${menuContext}`);
     $(modalProceedBtnId).text("Tambah");
     $(formId).trigger("reset");
-    resetRowDataValues();
+    resetRowDataRab();
     setTotalItem(rowData);
 };
 
@@ -291,7 +291,7 @@ const save = () => {
             title: "Berhasil",
             message: `Item Berhasil ${isEdit ? "diubah" : "ditambahkan"}`,
         });
-        resetRowDataValues();
+        resetRowDataRab();
     } else {
         Toast({
             title: "Gagal",
@@ -351,7 +351,7 @@ const getFormValues = () => {
     return formValues;
 };
 
-const resetRowDataValues = () => {
+const resetRowDataRab = () => {
     rowData = {
         nama_barang: "",
         qty: "",

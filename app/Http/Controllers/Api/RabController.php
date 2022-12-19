@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Rab;
 use App\Models\RabDetail;
-use Error;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +16,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class RabController extends Controller
 {
+
     public function index()
     {
+
         $rab = DB::table('rabs')
             ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
             ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan')

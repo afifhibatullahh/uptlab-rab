@@ -90,6 +90,8 @@
 @section('script'); ?>
 <script>
     const listRabs = <?= $listRabs; ?>;
+    const paketrabdetails = [];
+    
 
      const rabdetails=[];
 </script>

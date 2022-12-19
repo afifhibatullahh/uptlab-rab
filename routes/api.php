@@ -21,11 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 Route::controller(ItemController::class)->group(function () {
     Route::get('/items', 'index');
     Route::get('/items/show/{id}', 'show');
