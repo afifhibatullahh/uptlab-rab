@@ -119,7 +119,7 @@ $(modalContainerId).append(
 );
 
 $("#form-item-left-section").append(`
-        ${Dropdown({
+        ${Select2K({
             title: "Nama Barang",
             name: "nama_barang",
             id: "filter_item",
@@ -153,7 +153,9 @@ $("#form-item-left-section").append(`
             onclick: "resetRowDataRab()",
         })}
     `);
-
+$(".select2").select2({
+    theme: "bootstrap4",
+});
 $("#form-item-right-section").append(`
         ${InputFieldAdorment({
             title: "Qty",

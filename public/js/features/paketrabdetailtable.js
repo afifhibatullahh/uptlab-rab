@@ -113,7 +113,7 @@ $(modalContainerId).append(
 );
 
 $("#form-item-left-section").append(`
-        ${Dropdown({
+        ${Select2K({
             title: "Judul Pengadaan",
             name: "id_rab",
             id: "filter_rab",
@@ -132,6 +132,10 @@ $("#form-item-left-section").append(`
             onclick: "()",
         })}
     `);
+
+$(".select2").select2({
+    theme: "bootstrap4",
+});
 
 $("#form-item-right-section").append(`
         <p>Jenis : <span id="jenis"></span></p>

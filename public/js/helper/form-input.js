@@ -118,6 +118,41 @@ const Dropdown = ({
     `;
 };
 
+const Select2K = ({
+    title = "",
+    name = "",
+    width = "",
+    id = "",
+    dropdownList = [],
+    onchange = "",
+    onclick = "clearValidationError(this)",
+}) => {
+    return `
+        <div class="form-group ${width}">
+            <label for="${name}">${title}</label>
+            <select 
+            name="${name}"
+            class="form-control select2"
+            id="${id === "" ? name : id}"
+            onchange="${onchange}" onclick="${onclick}"
+            >
+            <option value="" hidden>-- Cari ${title} --</option>  
+                ${
+                    dropdownList !== []
+                        ? dropdownList
+                              .map(({ label, value }) => {
+                                  return `
+                                    <option value="${value}">${label}</option>
+                                `;
+                              })
+                              .join("")
+                        : null
+                }
+            </select>
+        </div>
+                        `;
+};
+
 const Textarea = ({
     title = "",
     name = "",
