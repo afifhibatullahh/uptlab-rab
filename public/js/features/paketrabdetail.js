@@ -59,7 +59,7 @@ function savePaketRabDetail() {
     });
 }
 
-function editRabDetail(id) {
+function editPaketRabDetail(id) {
     const data = getPaketRab();
 
     ajax({

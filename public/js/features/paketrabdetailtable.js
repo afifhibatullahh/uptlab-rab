@@ -26,7 +26,7 @@ const dataRab =
     paketrabdetails.map((item) => {
         return {
             ...item,
-            tanggal: item.waktu_pelaksanaan,
+            waktu_pelaksanaan: item.waktu_pelaksanaan,
         };
     }) ?? [];
 
@@ -62,7 +62,7 @@ const tableItem = initializeDatatablesFromArray(
             data: "laboratorium",
             title: "Laboratorium",
         },
-        { data: "tanggal", title: "Tanggal" },
+        { data: "waktu_pelaksanaan", title: "Waktu Pelaksanaan" },
     ],
     dataRab
 );
@@ -76,11 +76,12 @@ tableItem.on("click", "tr", function (event) {
     console.log(itemId);
 });
 
-const addRab = () => {
-    console.log("test");
+const addRab = async () => {
     $(modalTitleId).text(`Tambah ${menuContext}`);
     $(modalProceedBtnId).text("Tambah");
+    $("#filter_rab").val(null).trigger("change");
     $(formId).trigger("reset");
+
     resetRowDataPaket();
     setRowData(rowData);
 };
@@ -141,7 +142,7 @@ $("#form-item-right-section").append(`
         <p>Jenis : <span id="jenis"></span></p>
         <p>Nomor Akun : <span id="akun"></span></p>
         <p>Laboratorium : <span id="laboratorium"></span></p>
-        <p>Tanggal : <span id="tanggal"></span></p>
+        <p>Waktu Pelaksanaan : <span id="tanggal"></span></p>
     `);
 
 $("#filter_rab").on("change", function () {
@@ -154,18 +155,18 @@ $("#filter_rab").on("change", function () {
 let tempRab;
 
 const setRowData = (data) => {
-    $("#jenis").text(data.jenis_rab);
-    $("#akun").text(data.nomor_akun);
-    $("#laboratorium").text(data.laboratorium);
-    $("#tanggal").text(data.tanggal);
+    $("#jenis").text(data?.jenis_rab ?? data?.jenis_pengadaan ?? "");
+    $("#akun").text(data?.nomor_akun);
+    $("#laboratorium").text(data?.laboratorium);
+    $("#tanggal").text(data?.waktu_pelaksanaan);
 
     rowData = {
-        title: data.title,
-        jenis_rab: data.jenis_rab,
-        nomor_akun: data.nomor_akun,
-        laboratorium: data.laboratorium,
-        tanggal: data.tanggal,
-        id: data.id,
+        title: data?.title,
+        jenis_rab: data?.jenis_rab,
+        nomor_akun: data?.nomor_akun,
+        laboratorium: data?.laboratorium,
+        waktu_pelaksanaan: data?.waktu_pelaksanaan,
+        id: data?.id,
     };
 };
 
@@ -175,7 +176,7 @@ const resetRowDataPaket = () => {
         jenis_rab: "",
         nomor_akun: "",
         laboratorium: "",
-        tanggal: "",
+        waktu_pelaksanaan: "",
         id: "",
     };
 };
@@ -244,8 +245,11 @@ const edit = (id) => {
 
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
-    $(`option[value=${currentRab.id}]`).prop("selected", true);
+    $(`option[value=${currentRab.id}]`)
+        .prop("selected", true)
+        .trigger("change");
     const rab = listRabs.find((item) => item.id == id);
+
     tempRab = id;
     setRowData(rab);
 };

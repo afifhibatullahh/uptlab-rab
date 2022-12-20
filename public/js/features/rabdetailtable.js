@@ -238,6 +238,7 @@ let productTemp;
 const addItem = () => {
     $(modalTitleId).text(`Tambah ${menuContext}`);
     $(modalProceedBtnId).text("Tambah");
+    $("#filter_item").val(null).trigger("change");
     $(formId).trigger("reset");
     resetRowDataRab();
     setTotalItem(rowData);
@@ -320,7 +321,9 @@ const edit = (id) => {
     $(modalProceedBtnId).text("Ubah");
     $("#qty").val(currentItem.qty);
     $(`option[value=${currentItem.tax}]`).prop("selected", true);
-    $(`option[value=${currentItem.id}]`).prop("selected", true);
+    $(`option[value=${currentItem.id}]`)
+        .prop("selected", true)
+        .trigger("change");
     const item = product.find((item) => item.id == id);
 
     productTemp = id;

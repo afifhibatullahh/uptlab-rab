@@ -88,7 +88,7 @@ class PaketRabController extends Controller
 
                 $rabCreated = Paket::where('id', $id)->update([
                     'title' => $paketrab['title'],
-                    'jenis_pengadaan' => $paketrab['jenis_pengadaan'],
+                    'jenis_pengadaan' => $paketrab['jenis_rab'],
                     'nomor_akun' => $paketrab['nomor_akun'],
                     'waktu_pelaksanaan' => $paketrab['waktu_pelaksanaan'],
                 ]);

@@ -10,7 +10,8 @@
                     <h2 class="page-title mb-0">
                         Edit Paket Rencana Anggaran Belanja
                     </h2>
-                    <button type="button" class="btn btn-primary" onclick="editPaketRabDetail()">Simpan</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="editPaketRabDetail({{$paketrab->id}})">Simpan</button>
                 </div>
             </div>
         </div>
