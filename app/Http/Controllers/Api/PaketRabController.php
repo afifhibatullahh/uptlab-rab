@@ -161,6 +161,7 @@ class PaketRabController extends Controller
 
         $paketrab = $paketrabrequest['paketrab'];
         $paketrabdetail = $paketrabrequest['paketrabdetail'];
+        $rekap = $paketrabrequest['rekap'];
 
         try {
             $spreadsheet = new Spreadsheet();
@@ -181,9 +182,62 @@ class PaketRabController extends Controller
             $sheet->setCellValue('A5', 'Jenis Pengadaan :');
             $sheet->setCellValue('B5', $paketrab['jenis_pengadaan']);
 
-            foreach (range('A', 'B') as $columnID) {
+
+
+            $sheet->setCellValue('D7', 'REKAP');
+
+            $styleArray = [
+                'font' => [
+                    'bold' => true,
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'rotation' => 90,
+                    'startColor' => [
+                        'argb' => 'ffffff00',
+                    ],
+                ],
+            ];
+
+            $sheet->setCellValue('C9', 'No');
+            $sheet->setCellValue('D9', 'Nama Barang');
+            $sheet->setCellValue('E9', 'Spesifikasi');
+
+
+            $sheet->getStyle('C9:E9')->applyFromArray($styleArray);
+
+            $no = 1;
+            $start = 10;
+
+            $styleBorders = [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+            ];
+
+            foreach ($rekap as $key => $value) {
+                $sheet->setCellValue('C' . $start, $no);
+                $sheet->setCellValue('D' . $start, $key);
+                $sheet->setCellValue('E' . $start, 'Rp. ' . $value);
+
+                $sheet->getStyle('C' . $start . ':E' . $start)->applyFromArray($styleBorders);
+
+                $start++;
+                $no++;
+            }
+
+            foreach (range('A', 'E') as $columnID) {
                 $sheet->getColumnDimension($columnID)->setAutoSize(true);
             }
+
+
 
             $i = 1;
             foreach ($paketrabdetail as $key => $paket) {

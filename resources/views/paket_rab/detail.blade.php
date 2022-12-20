@@ -93,19 +93,18 @@
                                 </p>
                             </div>
                             <div class="col-md-6">
-                                <div class="text-right mr-2">
-                                    <p class="mb-2 h6">
-                                        <span class="text-muted">Subtotal : </span>
-                                        <strong>Rp.</strong>
-                                    </p>
-                                    <p class="mb-2 h6">
-                                        <span class="text-muted">Pajak : </span>
-                                        <strong>Rp.</strong>
-                                    </p>
-                                    <p class="mb-2 h6">
-                                        <span class="text-muted">Total : </span>
-                                        <span>Rp.</span>
-                                    </p>
+                                <div class="float-right mr-2">
+                                    <table>
+                                        <tbody>
+                                            @foreach($rekap as $key => $value)
+                                            <tr>
+                                                <td> <span class="text-muted">{{$key}}</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong>Rp. {{$value}}</strong></td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div> <!-- /.row -->

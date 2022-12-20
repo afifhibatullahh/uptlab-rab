@@ -5,7 +5,7 @@ $(document).ready(function () {
         rowGroup: true,
         columnDefs: [{ visible: false, targets: groupColumn }],
         order: [[groupColumn, "asc"]],
-        displayLength: 25,
+        displayLength: 10,
         drawCallback: function (settings) {
             var api = this.api();
             var rows = api.rows({ page: "current" }).nodes();

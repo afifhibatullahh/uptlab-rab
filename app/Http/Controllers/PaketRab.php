@@ -97,6 +97,7 @@ class PaketRab extends Controller
         }
 
         $paketToJson = [];
+        $rekap = [];
         $filteredItems = [];
 
         foreach ($rab_items as $items) {
@@ -105,14 +106,16 @@ class PaketRab extends Controller
                 $item->laboratorium = $lab;
                 $filteredItems[] = $item;
                 $paketToJson[$item->jenis_item][] = $item;
+                $rekap[$item->jenis_item] = $rekap[$item->jenis_item] ?? 0 + $item->jumlah_harga;
             }
         }
 
         $paketToJson = \json_encode([
             'paketrab' => $paket,
             'paketrabdetail' => $paketToJson,
+            'rekap' => $rekap,
         ]);
 
-        return view('paket_rab.detail', \compact(['paket', 'rabdetail', 'filteredItems', 'paketToJson']));
+        return view('paket_rab.detail', \compact(['paket', 'rabdetail', 'filteredItems', 'paketToJson', 'rekap']));
     }
 }
