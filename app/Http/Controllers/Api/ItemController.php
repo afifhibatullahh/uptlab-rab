@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
@@ -21,19 +22,6 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        //define validation rules
-        // $validator = Validator::make($request->all(), [
-        //     'nama_barang'     => 'required',
-        //     'satuan'   => 'required',
-        //     'jenis'   => 'required',
-        //     'sumber'   => 'required',
-        //     'harga'   => 'required',
-        // ]);
-        // //check if validation fails
-        // if ($validator) {
-        //     return new ItemResource([], 403, response()->json($validator->errors(), 422));
-        // }
-
         //upload image
         $image = $request->file('gambar');
         $imageName = 'default.jpg';
@@ -61,10 +49,27 @@ class ItemController extends Controller
     {
         //create item
         $item = Item::where('id', $id)->first();
+
+        $image_name = Item::find($id)['gambar'];
+
+
+        $image = $request->file('gambar');
+
+        if (!empty($image)) {
+
+            if (File::exists(\public_path(('assets/images/item/' . $image_name))) && $image_name !== 'default.jpg') {
+                File::delete(\public_path('assets/images/item/' . $image_name));
+            }
+
+            $image_name = $image->hashName();
+            $image->move(public_path('/assets/images/item'), $image_name);
+        }
+
+
         //return response
         if ($item) {
             $item->update([
-                'gambar'     => 'default.jpg',
+                'gambar'     => $image_name,
                 'nama_barang'     => $request->nama_barang,
                 'satuan'   => $request->satuan,
                 'sumber'   => $request->sumber,
