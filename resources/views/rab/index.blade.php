@@ -36,6 +36,7 @@
 
 @section('script'); ?>
 <script>
+    const userId = {{ Auth::user()->id}};
 </script>
 <script src="{{url('js/features/rab.js')}}"></script>
 @endSection

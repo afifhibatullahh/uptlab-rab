@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>Sistem Informasi RAB ITERA</title>
     <link rel="icon" href="favicon.ico">
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="<?= url('/css/simplebar.css') ?>">

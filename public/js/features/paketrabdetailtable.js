@@ -270,7 +270,7 @@ const destroy = (id) => {
                         Toast({
                             title: "Gagal",
                             type: "error",
-                            message: "Item Gagal ditambahkan",
+                            message: "RAB Gagal dihapus",
                         });
                         return;
                     }
@@ -282,7 +282,7 @@ const destroy = (id) => {
 
                     Toast({
                         title: "Berhasil",
-                        message: "Item Berhasil ditambahkan",
+                        message: "RAB Berhasil dihapus",
                     });
                 },
                 true,

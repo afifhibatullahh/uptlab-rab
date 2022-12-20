@@ -17,13 +17,25 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class RabController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
 
-        $rab = DB::table('rabs')
-            ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
-            ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan')
-            ->get();
+        $userId = $request->userId;
+
+        if ($userId == 1)
+            $rab = DB::table('rabs')
+                ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
+                ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan')
+                ->get();
+        else {
+            $laboratorium = DB::table('users')->select('laboratorium')->where('id', $userId)->first();
+
+            $rab = DB::table('rabs')
+                ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
+                ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan')
+                ->where('laboratorium', $laboratorium->laboratorium)
+                ->get();
+        }
 
         //return collection of items as a resource
         return  response()->json(['data' => $rab, 'message' => 'List Data Rab', 'status' => 200], 200);

@@ -8,16 +8,19 @@ const updateAPI = `${site_url_api}/rab/update`;
 const allItem = new Set();
 
 $(document).ready(function () {
-    const tableItem = initializeDatatables(tableId, indexAPI, [
-        {
-            data: "id",
-            title: "Actions",
-            searchable: false,
-            orderable: false,
-            render: function (id, type, item) {
-                allItem.add(item);
+    const tableItem = initializeDatatables(
+        tableId,
+        indexAPI,
+        [
+            {
+                data: "id",
+                title: "Actions",
+                searchable: false,
+                orderable: false,
+                render: function (id, type, item) {
+                    allItem.add(item);
 
-                return `
+                    return `
                         ${Button({
                             text: "Edit",
                             color: "warning btn-sm",
@@ -29,13 +32,15 @@ $(document).ready(function () {
                             onclick: `destroy(${id})`,
                         })}
                     `;
+                },
             },
-        },
-        { data: "nomor_akun", title: "Nomor Akun" },
-        { data: "status", title: "Status" },
-        { data: "jenis", title: "Jenis" },
-        { data: "waktu_pelaksanaan", title: "Waktu Pelaksanaan " },
-    ]);
+            { data: "nomor_akun", title: "Nomor Akun" },
+            { data: "status", title: "Status" },
+            { data: "jenis", title: "Jenis" },
+            { data: "waktu_pelaksanaan", title: "Waktu Pelaksanaan " },
+        ],
+        { userId: userId }
+    );
 
     tableItem.on("click", "tr", function (event) {
         let itemId = tableItem.row(this).data().id;

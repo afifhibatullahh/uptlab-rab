@@ -8,6 +8,11 @@
         background-color: #ddd !important;
         color: #001a4e !important;
     }
+
+    #tabledetailpaketrab td {
+        vertical-align: top;
+        border-bottom: solid 1px;
+    }
 </style>
 @endSection
 @section('content')
@@ -70,13 +75,14 @@
                                 @foreach ($filteredItems as $item)
                                 <tr>
                                     <td> {{$item->nama_barang}} </td>
-                                    <td> {{$item->spesifikasi}} </td>
+                                    <td style="max-width: 200px"> {{$item->spesifikasi}} </td>
                                     <td> {{$item->qty}} </td>
                                     <td> {{$item->satuan}} </td>
                                     <td> {{$item->harga_satuan}} </td>
                                     <td> {{$item->pajak}} </td>
                                     <td> {{$item->jumlah_harga}} </td>
-                                    <td> {{$item->sumber}} </td>
+                                    <td style="max-width: 20px"> <a href="{{$item->sumber}}"> <span>{{$item->sumber}}
+                                            </span></a> </td>
                                     <td> {{$item->jenis_item}} </td>
                                     <td> {{$item->laboratorium}} </td>
                                 </tr>

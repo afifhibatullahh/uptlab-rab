@@ -56,12 +56,25 @@
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <?php $isSuperAdmin = Auth::user()->role == 'super admin'; ?>
+                                    <?php $userLab = Auth::user()->laboratorium; ?>
+
                                     <div class="form-group mb-3">
                                         <label for="laboratorium-select">Laboratorium</label>
-                                        <select class="form-control" name="laboratorium" id="laboratorium-select">
+                                        <select class="form-control" <?=$isSuperAdmin ? '' : 'disabled' ; ?>
+                                            name="laboratorium" id="laboratorium-select">
                                             <option selected disabled>Pilih Laboratorium</option>
                                             @foreach($laboratorium as $lab)
+                                            @if($isSuperAdmin){
                                             <option value='{{$lab->id}}'>{{$lab->laboratorium}}</option>
+                                            }
+                                            @else{
+                                            <option value='{{$lab->id}}' <?=$userLab===$lab->id?'selected':'' ?>
+                                                >{{$lab->laboratorium}}</option>
+                                            }
+                                            @endif
+
                                             @endforeach
                                         </select>
                                     </div>

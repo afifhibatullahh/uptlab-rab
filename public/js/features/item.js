@@ -17,6 +17,7 @@ $(document).ready(function () {
         {
             data: "id",
             title: "Actions",
+            width: "20%",
             searchable: false,
             orderable: false,
             render: function (id, type, item) {
@@ -38,13 +39,13 @@ $(document).ready(function () {
                     `;
             },
         },
-        { data: "nama_barang", title: "Item" },
+        { data: "nama_barang", title: "Item", width: "20%" },
         {
             data: "harga_satuan",
             title: "Harga (Rp)",
             render: $.fn.dataTable.render.number(".", ",", 2),
         },
-        { data: "spesifikasi", title: "Spesifikasi" },
+        { data: "spesifikasi", title: "Spesifikasi", width: "30%" },
     ]);
 
     tableItem.on("click", "tr", function (event) {
