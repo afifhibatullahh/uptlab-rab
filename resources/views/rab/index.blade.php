@@ -29,7 +29,7 @@
     </div>
 
     <!-- Modal -->
-    <div id="modal-rab"></div>
+    <div id="modal-status"></div>
 </main>
 
 @endSection

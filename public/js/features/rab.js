@@ -1,11 +1,14 @@
 const menuContext = "Rencana Anggaran Belanja";
 const tableId = "#table-rab";
-const formId = "#form-rab";
+const formId = "#form-status";
 const indexAPI = `${site_url_api}/rab`;
-const storeAPI = `${site_url_api}/rab/store`;
 const deleteAPI = `${site_url_api}/rab/delete`;
-const updateAPI = `${site_url_api}/rab/update`;
+const updateAPI = `${site_url_api}/rab/updatestatus`;
 const allItem = new Set();
+
+const modalStatus = "#modal-status";
+const modalId = "#modal";
+const modalProceedBtnId = "#modalProceedBtnId";
 
 $(document).ready(function () {
     const tableItem = initializeDatatables(
@@ -31,28 +34,112 @@ $(document).ready(function () {
                             color: "danger btn-sm",
                             onclick: `destroy(${id})`,
                         })}
+                        ${Button({
+                            text: "Detail",
+                            color: "info btn-sm",
+                            onclick: `detail(${id})`,
+                        })}
                     `;
                 },
             },
             { data: "nomor_akun", title: "Nomor Akun" },
-            { data: "status", title: "Status" },
+            {
+                data: "status",
+                title: "Status",
+                render: (id, type, item) => {
+                    const color = {
+                        pending: "info",
+                        accepted: "success",
+                        rejected: "danger",
+                        update: "warning",
+                    };
+                    return `${Button({
+                        text: item.status,
+                        color: `${color[item.status]} btn-sm `,
+                        onclick: `changeStatus(${item.id})`,
+                        dataToggle: "modal",
+                        dataTarget: modalId,
+                    })}
+                    `;
+                },
+            },
             { data: "jenis", title: "Jenis" },
             { data: "waktu_pelaksanaan", title: "Waktu Pelaksanaan " },
         ],
         { userId: userId }
     );
 
-    tableItem.on("click", "tr", function (event) {
-        let itemId = tableItem.row(this).data().id;
-        const isClickedOnActionsButton = $(event.target)
-            .parent()
-            .hasClass("sorting_1");
+    $(modalStatus).append(
+        `${ModalPlain({
+            body: `
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <form id="${formId.slice(1)}">
+                                    <div class="row">
+                                        <div id="form-item-left-section" class="col-md-6"></div>
+                                        <div id="form-item-right-section" class="col-md-6"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>`,
+            size: "sm",
+        })}`
+    );
 
-        if (!isClickedOnActionsButton) {
-            window.location.replace(site_url + "/rab/" + itemId);
-        }
-    });
+    $(formId).append(`
+    ${Dropdown({
+        title: "Status",
+        name: "status",
+        dropdownList: [
+            {
+                label: "Pending",
+                value: "pending",
+            },
+            {
+                label: "Accepted",
+                value: "accepted",
+            },
+            {
+                label: "Rejected",
+                value: "rejected",
+            },
+            {
+                label: "Update",
+                value: "update",
+            },
+        ],
+    })}
+    ${Button({
+        text: "Ubah",
+        id: modalProceedBtnId.slice(1),
+        onclick: "updateStatus()",
+    })}
+    ${Button({ text: "Cancel", dataDismiss: "modal", color: "danger" })}
+`);
 });
+
+const getCurrentStatus = (id) => {
+    let currentStatus;
+
+    for (const item of allItem) {
+        if (item.id == id) currentStatus = item;
+    }
+
+    return currentStatus;
+};
+
+const changeStatus = (id) => {
+    const currentStatus = getCurrentStatus(id);
+    $(formId).attr("action", updateAPI + "/" + id);
+    $(`option[value=${currentStatus.status}]`).prop("selected", true);
+    clearValidationError();
+};
+
+function detail(id) {
+    window.location.replace(site_url + "/rab/" + id);
+}
 
 function edit(id) {
     location.href = `${site_url}/rab/edit/${id}`;
@@ -66,6 +153,41 @@ const getCurrentrab = (id) => {
     }
 
     return currentrab;
+};
+
+const updateStatus = () => {
+    let url = $(formId).attr("action");
+    const form = $(formId)[0];
+    const requestBody = new FormData(form);
+
+    requestBody.append("_method", "PATCH");
+
+    ajax({
+        type: "POST",
+        url: url,
+        data: requestBody,
+        success: function (response) {
+            if (response.status >= 200 && response.status < 300) {
+                reloadTable(tableId);
+                $(modalId).modal("hide");
+                Toast({ title: "Berhasil", message: response.message });
+            }
+
+            if (response.status >= 400 && response.status < 500) {
+                Toast({
+                    title: "Berhasil",
+                    message: "Update Status Berhasil",
+                });
+            }
+            if (response.status === 500) {
+                Toast({
+                    title: "Gagal",
+                    type: "error",
+                    message: response.message,
+                });
+            }
+        },
+    });
 };
 
 const destroy = (id) => {
