@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Rab;
 use App\Models\RabDetail;
+use Error;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -147,6 +148,20 @@ class RabController extends Controller
         return  response()->json(['message' => 'Data Rab berhasil Diubah', 'id' => $id, 'status' => 200], 200);
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+
+        $status =  $request->status;
+        try {
+            //code...
+            Rab::where('id', $id)->update(array('status' => $status));
+        } catch (Error $e) {
+            return  response()->json(['message' => $e->getMessage(), 'status' => 400], 400);
+        }
+
+
+        return  response()->json(['message' => 'Status RAB berhasil diubah', 'id' => $id, 'status' => 200], 200);
+    }
 
     public function delete($id)
     {
@@ -160,13 +175,7 @@ class RabController extends Controller
                 DB::beginTransaction();
 
 
-                $deleted = RabDetail::where('rab_id_ref', $id)->delete();
-
-                if ($deleted === 0) {
-                    $msg = ['data' => $rab, 'message' => 'RAB dengan id ' . $id . ' tidak ditemukan atau sudah dihapus', 'status' => 404];
-                    return  response()->json($msg, 404);
-                }
-
+                RabDetail::where('rab_id_ref', $id)->delete();
 
                 DB::commit();
             } catch (\PDOException $e) {
