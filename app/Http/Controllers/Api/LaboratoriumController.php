@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anggaran;
 use App\Models\Laboratorium;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LaboratoriumController extends Controller
 {
@@ -53,6 +55,19 @@ class LaboratoriumController extends Controller
 
         //return response
         if ($laboratorium) {
+
+            try {
+                DB::beginTransaction();
+
+
+                Anggaran::where('laboratorium', $id)->delete();
+
+                DB::commit();
+            } catch (\PDOException $e) {
+                // Woopsy
+                DB::rollBack();
+            }
+
             $laboratorium->delete();
             return  response()->json(['data' => $laboratorium, 'message' => 'Data berhasil dihapus', 'status' => 200], 200);
         } else

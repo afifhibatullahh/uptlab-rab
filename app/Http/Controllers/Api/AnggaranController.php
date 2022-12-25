@@ -53,17 +53,32 @@ class AnggaranController extends Controller
         //create item
         $anggaran = Anggaran::where('id', $id)->first();
 
+        $isHasbeenCreatedPeriod = DB::table('anggaran')
+            ->where('laboratorium', '=', $request->laboratorium)
+            ->where('datestart', '<=', $request->datestart)
+            ->where('dateend', '>=', $request->datestart)
+            ->first();
+
+        $isStillOnPeriod = $anggaran->datestart <= $request->datestart && $anggaran->dateend >= $request->datestart;
+
         //return response
-        if ($anggaran) {
+        if ($anggaran && ($isStillOnPeriod || empty($isHasbeenCreatedPeriod))) {
+
             $anggaran->update([
                 'laboratorium'     => $request->laboratorium,
                 'anggaran'     => $request->anggaran,
                 'datestart'     => $request->datestart,
                 'dateend'     => $request->dateend,
             ]);
+
+
             return  response()->json(['data' => $anggaran, 'message' => 'Data berhasil diubah', 'status' => 200], 200);
-        } else
+        } else {
+            if (isset($isHasbeenCreatedPeriod)) {
+                return  response()->json(['data' => $anggaran, 'message' => 'Data periode sudah ada', 'status' => 403], 403);
+            }
             return  response()->json(['data' => $anggaran, 'message' => 'Data gagal diubah', 'status' => 403], 403);
+        }
     }
 
     public function delete($id)
