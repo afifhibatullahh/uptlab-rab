@@ -96,7 +96,6 @@ class RabController extends Controller
                 $newDetail[] = [
                     'id_item' => $data['id'],
                     'jumlah_harga' => $data['jumlah_harga'],
-                    'pajak' => $data['tax'],
                     'qty' => $data['qty'],
                     'satuan' => $data['satuan'],
                     'rab_id_ref' => $idrab,
@@ -126,6 +125,29 @@ class RabController extends Controller
         $rab = $rabrequest['rab'];
         $rabdetail = $rabrequest['rabdetail'];
 
+        $anggaran = DB::table('anggaran')
+            ->where('laboratorium', '=', $rab['laboratorium'])
+            ->where('datestart', '<=', $rab['waktu_pelaksanaan'])
+            ->where('dateend', '>=', $rab['waktu_pelaksanaan'])
+            ->first();
+
+
+        if (empty($anggaran)) {
+            return  response()->json(['message' => 'Periode Rencana Anggaran Belanja pada waktu pelaksanaan tersebut tidak ada', 'status' => 400], 400);
+        }
+
+        $budget_used = DB::table('rabs')
+            ->where('id', '!=', $id)
+            ->where('laboratorium', '=', $rab['laboratorium'])
+            ->where('waktu_pelaksanaan', '>=', $anggaran->datestart)
+            ->where('waktu_pelaksanaan', '<=', $anggaran->dateend)
+            ->sum('jumlah');
+
+        $remain_budget = $anggaran->anggaran - $budget_used;
+
+        if ($rab['jumlah'] > $remain_budget) {
+            return  response()->json(['message' => 'RAB melebihi Anggaran, sisa anggaran : ' . $remain_budget, 'status' => 400], 400);
+        }
 
         try {
             DB::beginTransaction();
@@ -152,7 +174,6 @@ class RabController extends Controller
                 $newDetail[] = [
                     'id_item' => $data['id'],
                     'jumlah_harga' => $data['jumlah_harga'],
-                    'pajak' => $data['tax'],
                     'qty' => $data['qty'],
                     'satuan' => $data['satuan'],
                     'rab_id_ref' => $id,
@@ -225,9 +246,11 @@ class RabController extends Controller
 
         $rab = $rabrequest['rab'];
         $rabdetail = $rabrequest['rabdetail'];
-        $subtotal = $rabrequest['subtotal'];
+        $total1 = $rabrequest['total1'];
+        $expenses = $rabrequest['expenses'];
+        $total2 = $rabrequest['total2'];
         $tax = $rabrequest['tax'];
-        $total = $rabrequest['total'];
+        $total_rab = $rabrequest['total_rab'];
 
         try {
             $spreadsheet = new Spreadsheet();
@@ -310,16 +333,24 @@ class RabController extends Controller
             }
 
             ++$row;
-            $sheet->setCellValue('J' . $row, 'Subtotal :');
-            $sheet->setCellValue('K' . $row, 'Rp. ' . $subtotal);
+            $sheet->setCellValue('J' . $row, 'Total Harga :');
+            $sheet->setCellValue('K' . $row, 'Rp. ' . $total1);
             $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
             ++$row;
-            $sheet->setCellValue('J' . $row, 'Pajak :');
+            $sheet->setCellValue('J' . $row, 'Ongkir/Kenaikan Harga 10% :');
+            $sheet->setCellValue('K' . $row, 'Rp. ' . $expenses);
+            $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
+            ++$row;
+            $sheet->setCellValue('J' . $row, 'Total 2 :');
+            $sheet->setCellValue('K' . $row, 'Rp. ' . $total2);
+            $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
+            ++$row;
+            $sheet->setCellValue('J' . $row, 'PPN 11% :');
             $sheet->setCellValue('K' . $row, 'Rp. ' . $tax);
             $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
             ++$row;
-            $sheet->setCellValue('J' . $row, 'Total :');
-            $sheet->setCellValue('K' . $row, 'Rp. ' . $total);
+            $sheet->setCellValue('J' . $row, 'Total RAB :');
+            $sheet->setCellValue('K' . $row, 'Rp. ' . $total_rab);
             $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
 
 

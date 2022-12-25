@@ -55,7 +55,6 @@
                                     <th>Satuan</th>
                                     <th>Harga Satuan (Rp)</th>
                                     <th>Jumlah Harga (Rp)</th>
-                                    <th>Pajak (%)</th>
                                     <th>Sumber/Supplier</th>
                                     <th>Jenis Barang</th>
                                 </tr>
@@ -70,7 +69,6 @@
                                     <td> {{$item->satuan}} </td>
                                     <td> {{$item->harga_satuan}} </td>
                                     <td> {{$item->jumlah_harga}} </td>
-                                    <td> {{$item->pajak}} </td>
                                     <td> {{$item->sumber}} </td>
                                     <td> {{$item->jenis_item}} </td>
 
@@ -82,26 +80,43 @@
                         </table>
                         <div class="row mt-5">
                             <div class="col-md-6">
-                                <p class="text-muted small">
+                                {{-- <p class="text-muted small">
                                     <strong>Memo :</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
                                     hendrerit nisi sed sollicitudin pellentesque. Nunc posuere purus rhoncus pulvinar
                                     aliquam.
-                                </p>
+                                </p> --}}
                             </div>
                             <div class="col-md-6">
-                                <div class="text-right mr-2">
-                                    <p class="mb-2 h6">
-                                        <span class="text-muted">Subtotal : </span>
-                                        <strong>Rp.{{$subtotal}}</strong>
-                                    </p>
-                                    <p class="mb-2 h6">
-                                        <span class="text-muted">Pajak : </span>
-                                        <strong>Rp.{{$tax}}</strong>
-                                    </p>
-                                    <p class="mb-2 h6">
-                                        <span class="text-muted">Total : </span>
-                                        <span>Rp.{{$total}}</span>
-                                    </p>
+                                <div class="float-right mr-2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td> <span class="text-muted">Total Harga</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="total1">Rp. {{$summary['total1']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">Ongkir/Kenaikan Harga 10%</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="expenses">Rp.{{$summary['expenses']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">Total 2</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="total2">Rp.{{$summary['total2']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">PPN 11%</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="tax">Rp.{{$summary['tax']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">Total RAB</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="total_rab">Rp.{{$summary['total_rab']}}</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div> <!-- /.row -->

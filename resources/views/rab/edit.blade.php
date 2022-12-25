@@ -90,6 +90,41 @@
                         <!-- table -->
                         <table class="table datatables" id="table-rabdetail">
                         </table>
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <div class="float-right mr-2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td> <span class="text-muted">Total Harga</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="total1">Rp. {{$summary['total1']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">Ongkir/Kenaikan Harga 10%</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="expenses">Rp.{{$summary['expenses']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">Total 2</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="total2">Rp.{{$summary['total2']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">PPN 11%</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="tax">Rp.{{$summary['tax']}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <span class="text-muted">Total RAB</span></td>
+                                                <td> <span class="text-muted">: </span></td>
+                                                <td> <strong id="total_rab">Rp.{{$summary['total_rab']}}</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div> <!-- /.row -->
                     </div>
                 </div>
             </div>

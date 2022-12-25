@@ -15,7 +15,6 @@ const dataItem =
             satuan: item.satuan,
             harga_satuan: item.harga_satuan,
             jumlah_harga: item.jumlah_harga,
-            tax: item.pajak,
             jenis_item: item.jenis_item,
             id: item.id_item,
         };
@@ -36,7 +35,6 @@ let rowData = {
     satuan: "",
     harga_satuan: "0",
     jumlah_harga: "",
-    tax: "",
     jenis_item: "",
 };
 
@@ -79,7 +77,6 @@ const tableItem = initializeDatatablesFromArray(
             render: $.fn.dataTable.render.number(".", ",", 2),
         },
         { data: "jenis_item", title: "Jenis Item" },
-        { data: "tax", title: "Pajak (%)" },
     ],
     dataItem
 );
@@ -125,21 +122,6 @@ $("#form-item-left-section").append(`
             id: "filter_item",
             dropdownList: dropdownList,
         })}
-      
-        ${Dropdown({
-            title: "Pajak",
-            name: "tax",
-            dropdownList: [
-                {
-                    label: "Non Pajak",
-                    value: 0,
-                },
-                {
-                    label: "PPN",
-                    value: 11,
-                },
-            ],
-        })}
 
         ${Button({
             text: "Tambah",
@@ -164,22 +146,16 @@ $("#form-item-right-section").append(`
             idAdorment: "satuanAdorment",
         })}
         <h6>Harga Barang : <span id="harga_satuan">0</span></h6>
-        <h6>Pembelian : <span id="pembelian">0</span></h6>
-        <h6>Pajak : <span id="taxtotal">0</span></h6>
         <h5>Total Harga : <span id="jumlah_harga">0</span></h5>
     `);
 
-const totalPajak = $("#taxtotal");
 const totalAmount = $("#jumlah_harga");
 const qty = $("#qty");
-const pembelian = $("#pembelian");
-const taxSelected = $("#tax");
 
 $("#filter_item").on("change", function () {
     let selectedVal = $(this).find(":selected").val();
 
     const item = product.find((item) => item.id == selectedVal);
-
     const formValues = getFormValues();
     rowData = {
         ...rowData,
@@ -191,7 +167,6 @@ $("#filter_item").on("change", function () {
         id: item.id,
     };
 
-    console.log(rowData);
     rowData = setTotalItem(rowData);
 });
 
@@ -203,34 +178,33 @@ qty.on("input", function (e) {
     rowData = setTotalItem(rowData);
 });
 
-taxSelected.on("change", function () {
-    let selectedVal = $(this).find(":selected").val();
-
-    rowData = { ...rowData, tax: Number(selectedVal) };
-
-    rowData = setTotalItem(rowData);
-});
-
 const setTotalItem = (datas) => {
     $("#harga_satuan").text(`${datas.harga_satuan}`);
     $("#satuanAdorment").text(`${datas.satuan}`);
     const totalPembelian = Number(datas.harga_satuan ?? 0) * Number(datas.qty);
 
-    pembelian.text(`${totalPembelian}`);
-
-    const pajak =
-        datas.tax == 0 ? 0 : (Number(datas.tax) / 100) * totalPembelian;
-
-    totalPajak.text(`${pajak}`);
-
-    const amount = totalPembelian + pajak;
-
-    totalAmount.text(`${amount}`);
+    totalAmount.text(`${totalPembelian}`);
 
     return (datas = {
         ...datas,
-        jumlah_harga: amount,
+        jumlah_harga: totalPembelian,
     });
+};
+
+const updateSummary = () => {
+    const total = dataItem.reduce(function (total, item) {
+        return total + item.jumlah_harga;
+    }, 0);
+
+    const expenses = Math.round(total * 0.1);
+    const total2 = total + expenses;
+    const tax = Math.round(total2 * 0.11);
+    const total_rab = tax + total2;
+    $("#total1").text("Rp.  " + total);
+    $("#expenses").text("Rp.  " + expenses);
+    $("#total2").text("Rp.  " + total2);
+    $("#tax").text("Rp.  " + tax);
+    $("#total_rab").text("Rp.  " + total_rab);
 };
 
 let productTemp;
@@ -258,7 +232,6 @@ const save = () => {
     const isEdit = $(modalProceedBtnId).text() === "Ubah";
 
     for (let key in rowData) {
-        if (key == "tax") continue;
         if (rowData[key] == "") {
             validation = {
                 isValidate: false,
@@ -289,7 +262,7 @@ const save = () => {
             tableItem.row(objIndex).data(rowData).draw();
         }
         $(modalId).modal("hide");
-
+        updateSummary();
         Toast({
             title: "Berhasil",
             message: `Item Berhasil ${isEdit ? "diubah" : "ditambahkan"}`,
@@ -320,7 +293,6 @@ const edit = (id) => {
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
     $("#qty").val(currentItem.qty);
-    $(`option[value=${currentItem.tax}]`).prop("selected", true);
     $(`option[value=${currentItem.id}]`)
         .prop("selected", true)
         .trigger("change");
@@ -333,7 +305,6 @@ const edit = (id) => {
         satuan: item.satuan,
         harga_satuan: item.harga_satuan,
         qty: currentItem.qty,
-        tax: currentItem.tax,
         jumlah_harga: currentItem.jumlah_harga,
         jenis_item: item.jenis,
         id: item.id,
@@ -350,7 +321,6 @@ const getFormValues = () => {
     const formValues = {
         nama_barang: requestBody.get("nama_barang"),
         qty: requestBody.get("qty"),
-        tax: requestBody.get("tax"),
     };
 
     return formValues;
@@ -362,7 +332,6 @@ const resetRowDataRab = () => {
         qty: "",
         satuan: "",
         jumlah_harga: "",
-        tax: "",
         jenis_item: "",
         harga_satuan: "0",
     };
@@ -392,7 +361,7 @@ const destroy = (id) => {
                         Toast({
                             title: "Gagal",
                             type: "error",
-                            message: "Item Gagal ditambahkan",
+                            message: "Item Gagal dihapus",
                         });
                         return;
                     }
@@ -401,10 +370,10 @@ const destroy = (id) => {
 
                     tableItem.row(objIndex).remove().draw();
                     $(modalId).modal("hide");
-
+                    updateSummary();
                     Toast({
                         title: "Berhasil",
-                        message: "Item Berhasil ditambahkan",
+                        message: "Item Berhasil dihapus",
                     });
                 },
                 true,

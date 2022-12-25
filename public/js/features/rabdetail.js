@@ -5,12 +5,17 @@ function getDataRab() {
 
     const requestBody = new FormData(form[0]);
 
-    let rabdetail = [],
-        jumlah = 0;
-    data.map((item) => {
+    let rabdetail = [];
+
+    const total = data.reduce(function (total, item) {
         rabdetail.push(item);
-        jumlah += Number(item.jumlah_harga);
-    });
+        return total + item.jumlah_harga;
+    }, 0);
+
+    const expenses = Math.round(total * 0.1);
+    const total2 = total + expenses;
+    const tax = Math.round(total2 * 0.11);
+    const total_rab = tax + total2;
 
     let rab = {
         title: "",
@@ -18,7 +23,7 @@ function getDataRab() {
         jenis_rab: "",
         waktu_pelaksanaan: "",
         laboratorium: "",
-        jumlah: jumlah,
+        jumlah: total_rab,
     };
     for (let data of requestBody) {
         rab[data[0]] = data[1];

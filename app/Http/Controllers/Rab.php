@@ -57,6 +57,26 @@ class Rab extends Controller
             ->select('nama_barang', 'harga_satuan', 'items.id', 'jenis_item.jenis', 'satuan.satuan')
             ->get();
 
+        $total1 = 0;
+        foreach ($rabdetail as $data) {
+            $total1 += $data->jumlah_harga;
+        }
+        $total1 = \round($total1);
+        $expenses = \round($total1 * 0.1);
+        $total2 = $total1 + $expenses;
+        $tax = \round($total2 * 0.11);
+        $total_rab = $total2 + $tax;
+
+        $summary = [
+            'rab' => $rab,
+            'rabdetail' => $rabdetail,
+            'total1' => $total1,
+            'expenses' => $expenses,
+            'total2' => $total2,
+            'tax' => $tax,
+            'total_rab' => $total_rab,
+        ];
+
 
         $jenisrabs = JenisRab::all();
         $laboratorium = Laboratorium::all();
@@ -65,7 +85,7 @@ class Rab extends Controller
         $listItems =  json_encode($items);
         $rabdetail =  json_encode($rabdetail);
 
-        return view('rab.edit',  \compact(['rab', 'rabdetail', 'listItems', 'jenisrabs', 'laboratorium']));
+        return view('rab.edit',  \compact(['rab', 'rabdetail', 'listItems', 'jenisrabs', 'laboratorium', 'summary']));
     }
 
     public function show($id = null)
@@ -86,27 +106,28 @@ class Rab extends Controller
             ->where('rab_id_ref', $id)
             ->orderBy('nama_barang', 'asc')->get();
 
-        $subtotal = 0;
-        $tax = 0;
+        $total1 = 0;
         foreach ($rabdetail as $data) {
-            $subtotal += $data->jumlah_harga;
-
-            if ($data->pajak > 0) {
-                $tax +=  $data->jumlah_harga / $data->pajak;
-            }
+            $total1 += $data->jumlah_harga;
         }
-        $subtotal = \round($subtotal);
-        $tax = \round($tax);
-        $total = $subtotal + $tax;
+        $total1 = \round($total1);
+        $expenses = \round($total1 * 0.1);
+        $total2 = $total1 + $expenses;
+        $tax = \round($total2 * 0.11);
+        $total_rab = $total2 + $tax;
 
-        $rabToJson = \json_encode([
+        $summary = [
             'rab' => $rab,
             'rabdetail' => $rabdetail,
-            'subtotal' => $subtotal,
+            'total1' => $total1,
+            'expenses' => $expenses,
+            'total2' => $total2,
             'tax' => $tax,
-            'total' => $total,
-        ]);
+            'total_rab' => $total_rab,
+        ];
 
-        return view('rab.detail', \compact(['rab', 'rabdetail', 'total', 'subtotal', 'tax', 'rabToJson']));
+        $rabToJson = \json_encode($summary);
+
+        return view('rab.detail', \compact(['rab', 'rabdetail', 'summary', 'rabToJson']));
     }
 }
