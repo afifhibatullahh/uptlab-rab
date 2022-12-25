@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AnggaranController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\JenisItemController;
 use App\Http\Controllers\Api\JenisRabController;
@@ -59,6 +60,13 @@ Route::controller(LaboratoriumController::class)->group(function () {
     Route::post('/laboratorium/store', 'store');
     Route::patch('/laboratorium/update/{id}', 'update');
     Route::delete('/laboratorium/delete/{id}', 'delete');
+});
+
+Route::controller(AnggaranController::class)->group(function () {
+    Route::get('/anggaran', 'index');
+    Route::post('/anggaran/store', 'store');
+    Route::patch('/anggaran/update/{id}', 'update');
+    Route::delete('/anggaran/delete/{id}', 'delete');
 });
 
 Route::controller(RabController::class)->group(function () {

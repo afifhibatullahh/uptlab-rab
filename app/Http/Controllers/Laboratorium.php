@@ -16,7 +16,10 @@ class Laboratorium extends Controller
 
     public function show($id = null)
     {
+
         $laboratorium = ModelsLaboratorium::where('id', $id)->first();
-        return view('laboratorium.detail', compact(['laboratorium']));
+        $title = 'Laboratorium ' . $laboratorium->laboratorium;
+
+        return view('laboratorium.anggaran', compact(['laboratorium', 'title', 'id']));
     }
 }

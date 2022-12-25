@@ -34,6 +34,12 @@
                     <span class="ml-3 item-text">Rencana Anggaran Belanja</span>
                 </a>
             </li>
+            <li class="nav-item w-100">
+                <a class="nav-link" href="<?= url('laboratorium') ?>">
+                    <i class="fe fe-filter fe-16"></i>
+                    <span class="ml-3 item-text">Laboratorium</span>
+                </a>
+            </li>
             <li class="nav-item dropdown">
                 <a href="#forms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                     <i class="fe fe-database fe-16"></i>
@@ -51,10 +57,6 @@
                     <li class="nav-item">
                         <a class="nav-link pl-3" href="<?= url('jenisrab') ?>"><span class="ml-1 item-text">Jenis
                                 RAB</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="<?= url('laboratorium') ?>"><span
-                                class="ml-1 item-text">Laboratorium</span></a>
                     </li>
                 </ul>
             </li>

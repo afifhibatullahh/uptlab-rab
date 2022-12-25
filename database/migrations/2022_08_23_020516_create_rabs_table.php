@@ -21,10 +21,13 @@ class CreateRabsTable extends Migration
 
             $table->integer('laboratorium');
 
-            $table->string('status');
+            $table->enum('status', ['pending', 'accepted', 'rejected', 'update']);
             $table->date('waktu_pelaksanaan');
 
-            $table->double('jumlah');
+            $table->double('total_harga');
+            $table->double('expenses');
+            $table->double('total_harga2');
+            $table->double('pajak');
             $table->timestamps();
         });
     }

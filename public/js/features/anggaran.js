@@ -1,28 +1,31 @@
-const menuContext = "Laboratorium";
-const tableId = "#table-laboratorium";
-const formId = "#form-laboratorium";
-const indexAPI = `${site_url_api}/laboratorium`;
-const storeAPI = `${site_url_api}/laboratorium/store`;
-const deleteAPI = `${site_url_api}/laboratorium/delete`;
-const updateAPI = `${site_url_api}/laboratorium/update`;
+const menuContext = "Jenis RAB";
+const tableId = "#table-anggaran";
+const formId = "#form-anggaran";
+const indexAPI = `${site_url_api}/anggaran`;
+const storeAPI = `${site_url_api}/anggaran/store`;
+const deleteAPI = `${site_url_api}/anggaran/delete`;
+const updateAPI = `${site_url_api}/anggaran/update`;
 const allItem = new Set();
 
 const modalId = "#modal";
 const modalTitleId = "#modal-title";
 const modalProceedBtnId = "#modal-proceed-btn";
-const modalContainerId = "#modal-laboratorium";
+const modalContainerId = "#modal-anggaran";
 
 $(document).ready(function () {
-    initializeDatatables(tableId, indexAPI, [
-        {
-            data: "id",
-            title: "Actions",
-            searchable: false,
-            orderable: false,
-            render: function (id, type, item) {
-                allItem.add(item);
+    const tableItem = initializeDatatables(
+        tableId,
+        indexAPI,
+        [
+            {
+                data: "id",
+                title: "Actions",
+                searchable: false,
+                orderable: false,
+                render: function (id, type, item) {
+                    allItem.add(item);
 
-                return `
+                    return `
                         ${Button({
                             text: "Edit",
                             color: "warning btn-sm",
@@ -35,16 +38,21 @@ $(document).ready(function () {
                             color: "danger btn-sm",
                             onclick: `destroy(${id})`,
                         })}
-                        ${Button({
-                            text: "Detail",
-                            color: "info btn-sm",
-                            onclick: `detail(${id})`,
-                        })}
                     `;
+                },
             },
-        },
-        { data: "laboratorium", title: "laboratorium" },
-    ]);
+            {
+                data: "anggaran",
+                title: "Anggaran",
+                render: $.fn.dataTable.render.number(".", ",", 2),
+            },
+            { data: "datestart", title: "Tanggal Mulai" },
+            { data: "dateend", title: "Tanggal Selesai" },
+        ],
+        {
+            id_lab: id_lab,
+        }
+    );
 
     // tableItem.on("click", "tr", function (event) {
     //     let itemId = tableItem.row(this).data().id;
@@ -53,7 +61,7 @@ $(document).ready(function () {
     //         .hasClass("sorting_1");
 
     //     if (!isClickedOnActionsButton) {
-    //         window.location.replace(site_url + "/laboratorium/show/" + itemId);
+    //         window.location.replace(site_url + "/anggaran/show/" + itemId);
     //     }
     // });
 
@@ -82,12 +90,22 @@ $(document).ready(function () {
                         </div>
                     </div>
                 </div>`,
-            size: "sm",
+            size: "md",
         })}`
     );
 
     $(formId).append(`
-        ${InputField({ title: "Laboratorium", name: "laboratorium" })}
+        ${InputField({ title: "Anggaran", name: "anggaran", type: "number" })}
+        ${InputField({
+            title: "Tanggal Mulai",
+            type: "date",
+            name: "datestart",
+        })}
+        ${InputField({
+            title: "Tanggal Selesai",
+            type: "date",
+            name: "dateend",
+        })}
         ${Button({
             text: "Tambah",
             id: modalProceedBtnId.slice(1),
@@ -95,26 +113,28 @@ $(document).ready(function () {
         })}
         ${Button({ text: "Cancel", dataDismiss: "modal", color: "danger" })}
     `);
+
+    $("#datestart").on("change", function () {
+        $("#dateend").attr("min", $("#datestart").val());
+    });
 });
 
-function detail(id) {
-    window.location.replace(site_url + "/laboratorium/" + id);
-}
-
-const getCurrentLaboratorium = (id) => {
-    let currentLaboratorium;
+const getCurrentanggaran = (id) => {
+    let currentanggaran;
 
     for (const item of allItem) {
-        if (item.id == id) currentLaboratorium = item;
+        if (item.id == id) currentanggaran = item;
     }
 
-    return currentLaboratorium;
+    console.log(currentanggaran);
+    return currentanggaran;
 };
 
 const save = () => {
     let url = $(formId).attr("action");
     const form = $(formId)[0];
     const requestBody = new FormData(form);
+    requestBody.append("laboratorium", id_lab);
     const isEdit = $(modalProceedBtnId).text() === "Ubah";
 
     if (isEdit) requestBody.append("_method", "PATCH");
@@ -133,7 +153,7 @@ const save = () => {
             if (response.status >= 400 && response.status < 500) {
                 Toast({
                     title: "Berhasil",
-                    message: "Data item gagal ditambakan",
+                    message: response.message,
                 });
             }
 
@@ -157,11 +177,18 @@ const create = () => {
 };
 
 const edit = (id) => {
-    const currentLaboratorium = getCurrentLaboratorium(id);
+    const currentanggaran = getCurrentanggaran(id);
+    console.log(currentanggaran);
     $(modalTitleId).text(`Ubah ${menuContext}`);
     $(modalProceedBtnId).text("Ubah");
     $(formId).attr("action", updateAPI + "/" + id);
-    $("#laboratorium").val(currentLaboratorium.laboratorium);
+    $("#anggaran").val(currentanggaran.anggaran);
+    $("#datestart").val(currentanggaran.datestart);
+    $("#dateend").val(currentanggaran.dateend);
+
+    $("#dateend").attr("min", $("#datestart").val());
+
+    console.log($("#dateend"));
     clearValidationError();
 };
 
@@ -169,7 +196,7 @@ const destroy = (id) => {
     Toast({
         timeout: 5000,
         overlay: true,
-        title: "Hapus data laboratorium",
+        title: "Hapus data anggaran",
         message: "Apakah anda yakin?",
         position: "center",
         type: "question",

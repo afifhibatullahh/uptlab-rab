@@ -28,10 +28,10 @@ const ajax = ({
             });
         }
     },
-    error = function (event, type, message) {
+    error = function (event, type, message, response) {
         Toast({
             title: "Gagal",
-            message: message,
+            message: event.responseJSON.message ?? message,
             type: "error",
         });
     },
