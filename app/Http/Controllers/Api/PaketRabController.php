@@ -173,18 +173,26 @@ class PaketRabController extends Controller
 
             $sheet = $spreadsheet->getSheet(0);
 
+            foreach (range(1, 5) as $rowID) {
+                $sheet->mergeCells('A' . $rowID . ':E' . $rowID);
+            }
             $sheet->setCellValue('A1', 'Rencana Anggaran Belanja (RAB)');
 
-            $sheet->setCellValue('A3', 'Judul Pengadaan :');
-            $sheet->setCellValue('B3', $paketrab['title']);
-            $sheet->setCellValue('A4', 'Nomor Akun :');
-            $sheet->setCellValue('B4', $paketrab['nomor_akun']);
-            $sheet->setCellValue('A5', 'Jenis Pengadaan :');
-            $sheet->setCellValue('B5', $paketrab['jenis_pengadaan']);
+            $sheet->setCellValue('A3', 'Judul Pengadaan : ' . $paketrab['title']);
+            $sheet->setCellValue('A4', 'Nomor Akun : ' . $paketrab['nomor_akun']);
+            $sheet->setCellValue('A5', 'Jenis Pengadaan : ' . $paketrab['jenis_pengadaan']);
 
+            $sheet->mergeCells('C7:E7');
 
+            $style = array(
+                'alignment' => array(
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                )
+            );
 
-            $sheet->setCellValue('D7', 'REKAP');
+            $sheet->getStyle('C7:E7')->applyFromArray($style);
+
+            $sheet->setCellValue('C7', 'REKAP');
 
             $styleArray = [
                 'font' => [
@@ -249,7 +257,7 @@ class PaketRabController extends Controller
                 $sheet = $spreadsheet->getSheet($i);
 
 
-                foreach (range('A', 'M') as $columnID) {
+                foreach (range('A', 'L') as $columnID) {
                     $sheet->getColumnDimension($columnID)->setAutoSize(true);
                 }
 
@@ -259,11 +267,10 @@ class PaketRabController extends Controller
                 $sheet->setCellValue('F7', 'Jumlah');
                 $sheet->setCellValue('G7', 'Satuan');
                 $sheet->setCellValue('H7', 'Harga Satuan');
-                $sheet->setCellValue('I7', 'Pajak');
-                $sheet->setCellValue('J7', 'Jumlah Harga');
-                $sheet->setCellValue('K7', 'Sumber');
-                $sheet->setCellValue('L7', 'Jenis Barang');
-                $sheet->setCellValue('M7', 'Laboratorium');
+                $sheet->setCellValue('I7', 'Jumlah Harga');
+                $sheet->setCellValue('J7', 'Sumber');
+                $sheet->setCellValue('K7', 'Jenis Barang');
+                $sheet->setCellValue('L7', 'Laboratorium');
 
                 $styleArray = [
                     'font' => [
@@ -284,7 +291,7 @@ class PaketRabController extends Controller
                 ];
 
 
-                $sheet->getStyle('C7:M7')->applyFromArray($styleArray);
+                $sheet->getStyle('C7:L7')->applyFromArray($styleArray);
 
                 $startrRow = 8;
                 $row = $startrRow;
@@ -305,13 +312,12 @@ class PaketRabController extends Controller
                     $sheet->setCellValue('F' . $row, $detail['qty']);
                     $sheet->setCellValue('G' . $row, $detail['satuan']);
                     $sheet->setCellValue('H' . $row, 'Rp. ' . $detail['harga_satuan']);
-                    $sheet->setCellValue('I' . $row, $detail['pajak'] . '%');
-                    $sheet->setCellValue('J' . $row, 'Rp. ' . $detail['jumlah_harga']);
-                    $sheet->setCellValue('K' . $row, $detail['sumber']);
-                    $sheet->setCellValue('L' . $row, $detail['jenis_item']);
-                    $sheet->setCellValue('M' . $row, $detail['laboratorium']);
+                    $sheet->setCellValue('I' . $row, 'Rp. ' . $detail['jumlah_harga']);
+                    $sheet->setCellValue('J' . $row, $detail['sumber']);
+                    $sheet->setCellValue('K' . $row, $detail['jenis_item']);
+                    $sheet->setCellValue('L' . $row, $detail['laboratorium']);
 
-                    $sheet->getStyle('C' . $row . ':M' . $row)->applyFromArray($styleBorders);
+                    $sheet->getStyle('C' . $row . ':L' . $row)->applyFromArray($styleBorders);
                     $row++;
                     $number++;
                 }

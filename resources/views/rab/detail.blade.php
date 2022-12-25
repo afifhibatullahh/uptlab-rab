@@ -68,7 +68,7 @@
                                     <td> {{$item->qty}} </td>
                                     <td> {{$item->satuan}} </td>
                                     <td> {{$item->harga_satuan}} </td>
-                                    <td> {{$item->jumlah_harga}} </td>
+                                    <td> @convert($item->jumlah_harga) </td>
                                     <td> {{$item->sumber}} </td>
                                     <td> {{$item->jenis_item}} </td>
 
@@ -93,27 +93,29 @@
                                             <tr>
                                                 <td> <span class="text-muted">Total Harga</span></td>
                                                 <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="total1">Rp. {{$summary['total1']}}</strong></td>
+                                                <td> <strong id="total1">Rp. @convert($summary['total1'])</strong></td>
                                             </tr>
                                             <tr>
                                                 <td> <span class="text-muted">Ongkir/Kenaikan Harga 10%</span></td>
                                                 <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="expenses">Rp.{{$summary['expenses']}}</strong></td>
+                                                <td> <strong id="expenses">Rp. @convert($summary['expenses']) </strong>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td> <span class="text-muted">Total 2</span></td>
                                                 <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="total2">Rp.{{$summary['total2']}}</strong></td>
+                                                <td> <strong id="total2">Rp. @convert($summary['total2'])</strong></td>
                                             </tr>
                                             <tr>
                                                 <td> <span class="text-muted">PPN 11%</span></td>
                                                 <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="tax">Rp.{{$summary['tax']}}</strong></td>
+                                                <td> <strong id="tax">Rp. @convert($summary['tax'])</strong></td>
                                             </tr>
                                             <tr>
                                                 <td> <span class="text-muted">Total RAB</span></td>
                                                 <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="total_rab">Rp.{{$summary['total_rab']}}</strong></td>
+                                                <td> <strong id="total_rab">Rp. @convert($summary['total_rab'])</strong>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

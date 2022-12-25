@@ -64,7 +64,6 @@
                                     <th>Jumlah</th>
                                     <th>Satuan</th>
                                     <th>Harga Satuan (Rp)</th>
-                                    <th>Pajak (%)</th>
                                     <th>Jumlah Harga (Rp)</th>
                                     <th>Sumber/Supplier</th>
                                     <th>Jenis Barang</th>
@@ -79,8 +78,7 @@
                                     <td> {{$item->qty}} </td>
                                     <td> {{$item->satuan}} </td>
                                     <td> {{$item->harga_satuan}} </td>
-                                    <td> {{$item->pajak}} </td>
-                                    <td> {{$item->jumlah_harga}} </td>
+                                    <td> @convert($item->jumlah_harga) </td>
                                     <td style="max-width: 20px"> <a href="{{$item->sumber}}"> <span>{{$item->sumber}}
                                             </span></a> </td>
                                     <td> {{$item->jenis_item}} </td>
@@ -92,11 +90,11 @@
                         </table>
                         <div class="row mt-5">
                             <div class="col-md-6">
-                                <p class="text-muted small">
+                                {{-- <p class="text-muted small">
                                     <strong>Memo :</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
                                     hendrerit nisi sed sollicitudin pellentesque. Nunc posuere purus rhoncus pulvinar
                                     aliquam.
-                                </p>
+                                </p> --}}
                             </div>
                             <div class="col-md-6">
                                 <div class="float-right mr-2">
@@ -106,7 +104,7 @@
                                             <tr>
                                                 <td> <span class="text-muted">{{$key}}</span></td>
                                                 <td> <span class="text-muted">: </span></td>
-                                                <td> <strong>Rp. {{$value}}</strong></td>
+                                                <td> <strong>Rp. @convert($value)</strong></td>
                                             </tr>
                                             @endforeach
                                         </tbody>

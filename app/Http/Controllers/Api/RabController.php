@@ -261,25 +261,34 @@ class RabController extends Controller
                 $sheet->getColumnDimension($columnID)->setAutoSize(true);
             }
 
+            $style = array(
+                'alignment' => array(
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                )
+            );
+
+            $sheet->getStyle('A1:J1')->applyFromArray($style);
+
+            foreach (range(1, 5) as $rowID) {
+                $sheet->mergeCells('A' . $rowID . ':J' . $rowID);
+            }
 
             $sheet->setCellValue('A1', 'Rencana Anggaran Belanja (RAB)');
 
-            $sheet->setCellValue('A3', 'Judul Pengadaan :');
-            $sheet->setCellValue('B3', $rab['title']);
-            $sheet->setCellValue('A4', 'Nomor Akun :');
-            $sheet->setCellValue('B4', $rab['nomor_akun']);
-            $sheet->setCellValue('A5', 'Jenis Pengadaan :');
-            $sheet->setCellValue('B5', $rab['jenis_rab']);
+            $sheet->setCellValue('A2', 'Judul Pengadaan : ' . $rab['title']);
+            $sheet->setCellValue('A3', 'Nomor Akun : ' . $rab['nomor_akun']);
+            $sheet->setCellValue('A4', 'Jenis Pengadaan : ' . $rab['jenis_rab']);
+            $sheet->setCellValue('A5', 'Waktu Pelaksanaan : ' . $rab['waktu_pelaksanaan']);
 
-            $sheet->setCellValue('C7', 'No');
-            $sheet->setCellValue('D7', 'Nama Barang');
-            $sheet->setCellValue('E7', 'Spesifikasi');
-            $sheet->setCellValue('F7', 'Jumlah');
-            $sheet->setCellValue('G7', 'Satuan');
-            $sheet->setCellValue('H7', 'Harga Satuan');
-            $sheet->setCellValue('I7', 'Jumlah Harga');
-            $sheet->setCellValue('J7', 'Sumber');
-            $sheet->setCellValue('K7', 'Jenis Barang');
+            $sheet->setCellValue('A7', 'No');
+            $sheet->setCellValue('B7', 'Nama Barang');
+            $sheet->setCellValue('C7', 'Spesifikasi');
+            $sheet->setCellValue('D7', 'Jumlah');
+            $sheet->setCellValue('E7', 'Satuan');
+            $sheet->setCellValue('F7', 'Harga Satuan');
+            $sheet->setCellValue('G7', 'Jumlah Harga');
+            $sheet->setCellValue('H7', 'Sumber');
+            $sheet->setCellValue('I7', 'Jenis Barang');
 
             $styleArray = [
                 'font' => [
@@ -300,7 +309,7 @@ class RabController extends Controller
             ];
 
 
-            $sheet->getStyle('C7:K7')->applyFromArray($styleArray);
+            $sheet->getStyle('A7:I7')->applyFromArray($styleArray);
 
 
 
@@ -317,41 +326,41 @@ class RabController extends Controller
 
             $number = 1;
             foreach ($rabdetail as $detail) {
-                $sheet->setCellValue('C' . $row, $number);
-                $sheet->setCellValue('D' . $row, $detail['nama_barang']);
-                $sheet->setCellValue('E' . $row, '-');
-                $sheet->setCellValue('F' . $row, $detail['qty']);
-                $sheet->setCellValue('G' . $row, $detail['satuan']);
-                $sheet->setCellValue('H' . $row, 'Rp. ' . $detail['harga_satuan']);
-                $sheet->setCellValue('I' . $row, 'Rp. ' . $detail['jumlah_harga']);
-                $sheet->setCellValue('J' . $row, $detail['sumber']);
-                $sheet->setCellValue('K' . $row, $detail['jenis_item']);
+                $sheet->setCellValue('A' . $row, $number);
+                $sheet->setCellValue('B' . $row, $detail['nama_barang']);
+                $sheet->setCellValue('C' . $row, '-');
+                $sheet->setCellValue('D' . $row, $detail['qty']);
+                $sheet->setCellValue('E' . $row, $detail['satuan']);
+                $sheet->setCellValue('F' . $row, 'Rp. ' . $detail['harga_satuan']);
+                $sheet->setCellValue('G' . $row, 'Rp. ' . $detail['jumlah_harga']);
+                $sheet->setCellValue('H' . $row, $detail['sumber']);
+                $sheet->setCellValue('I' . $row, $detail['jenis_item']);
 
-                $sheet->getStyle('C' . $row . ':K' . $row)->applyFromArray($styleBorders);
+                $sheet->getStyle('A' . $row . ':I' . $row)->applyFromArray($styleBorders);
                 $row++;
                 $number++;
             }
 
             ++$row;
-            $sheet->setCellValue('J' . $row, 'Total Harga :');
-            $sheet->setCellValue('K' . $row, 'Rp. ' . $total1);
-            $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
+            $sheet->setCellValue('H' . $row, 'Total Harga :');
+            $sheet->setCellValue('I' . $row, 'Rp. ' . $total1);
+            $sheet->getStyle('H' . $row . ':I' . $row)->applyFromArray($styleArray);
             ++$row;
-            $sheet->setCellValue('J' . $row, 'Ongkir/Kenaikan Harga 10% :');
-            $sheet->setCellValue('K' . $row, 'Rp. ' . $expenses);
-            $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
+            $sheet->setCellValue('H' . $row, 'Ongkir/Kenaikan Harga 10% :');
+            $sheet->setCellValue('I' . $row, 'Rp. ' . $expenses);
+            $sheet->getStyle('H' . $row . ':I' . $row)->applyFromArray($styleArray);
             ++$row;
-            $sheet->setCellValue('J' . $row, 'Total 2 :');
-            $sheet->setCellValue('K' . $row, 'Rp. ' . $total2);
-            $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
+            $sheet->setCellValue('H' . $row, 'Total 2 :');
+            $sheet->setCellValue('I' . $row, 'Rp. ' . $total2);
+            $sheet->getStyle('H' . $row . ':I' . $row)->applyFromArray($styleArray);
             ++$row;
-            $sheet->setCellValue('J' . $row, 'PPN 11% :');
-            $sheet->setCellValue('K' . $row, 'Rp. ' . $tax);
-            $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
+            $sheet->setCellValue('H' . $row, 'PPN 11% :');
+            $sheet->setCellValue('I' . $row, 'Rp. ' . $tax);
+            $sheet->getStyle('H' . $row . ':I' . $row)->applyFromArray($styleArray);
             ++$row;
-            $sheet->setCellValue('J' . $row, 'Total RAB :');
-            $sheet->setCellValue('K' . $row, 'Rp. ' . $total_rab);
-            $sheet->getStyle('J' . $row . ':K' . $row)->applyFromArray($styleArray);
+            $sheet->setCellValue('H' . $row, 'Total RAB :');
+            $sheet->setCellValue('I' . $row, 'Rp. ' . $total_rab);
+            $sheet->getStyle('H' . $row . ':I' . $row)->applyFromArray($styleArray);
 
 
             $writer = new Xlsx($spreadsheet);

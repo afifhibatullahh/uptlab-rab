@@ -1,6 +1,6 @@
 const tableId = "#tabledetailpaketrab";
 $(document).ready(function () {
-    var groupColumn = 8;
+    var groupColumn = 7;
     var table = $(tableId).DataTable({
         rowGroup: true,
         columnDefs: [{ visible: false, targets: groupColumn }],
