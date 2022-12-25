@@ -49,6 +49,30 @@ class RabController extends Controller
 
         $rab = $rabrequest['rab'];
         $rabdetail = $rabrequest['rabdetail'];
+
+        $anggaran = DB::table('anggaran')
+            ->where('laboratorium', '=', $rab['laboratorium'])
+            ->where('datestart', '<=', $rab['waktu_pelaksanaan'])
+            ->where('dateend', '>=', $rab['waktu_pelaksanaan'])
+            ->first();
+
+
+        if (empty($anggaran)) {
+            return  response()->json(['message' => 'Periode Rencana Anggaran Belanja pada waktu pelaksanaan tersebut tidak ada', 'status' => 400], 400);
+        }
+
+        $budget_used = DB::table('rabs')
+            ->where('laboratorium', '=', $rab['laboratorium'])
+            ->where('waktu_pelaksanaan', '>=', $anggaran->datestart)
+            ->where('waktu_pelaksanaan', '<=', $anggaran->dateend)
+            ->sum('jumlah');
+
+        $remain_budget = $anggaran->anggaran - $budget_used;
+
+        if ($rab['jumlah'] > $remain_budget) {
+            return  response()->json(['message' => 'RAB melebihi Anggaran, sisa anggaran : ' . $remain_budget, 'status' => 400], 400);
+        }
+
         try {
             DB::beginTransaction();
             // database queries here
