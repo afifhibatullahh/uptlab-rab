@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MailNotify;
 use App\Models\Rab;
 use App\Models\RabDetail;
+use Carbon\Carbon;
 use Error;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -50,24 +52,36 @@ class RabController extends Controller
         $rab = $rabrequest['rab'];
         $rabdetail = $rabrequest['rabdetail'];
 
+        // $anggaran = DB::table('anggaran')
+        //     ->where('laboratorium', '=', $rab['laboratorium'])
+        //     ->where('datestart', '<=', $rab['waktu_pelaksanaan'])
+        //     ->where('dateend', '>=', $rab['waktu_pelaksanaan'])
+        //     ->first();
+
+        $periode = date('Y', strtotime(($rab['waktu_pelaksanaan'])));
+
         $anggaran = DB::table('anggaran')
             ->where('laboratorium', '=', $rab['laboratorium'])
-            ->where('datestart', '<=', $rab['waktu_pelaksanaan'])
-            ->where('dateend', '>=', $rab['waktu_pelaksanaan'])
-            ->first();
+            ->where('periode', '=', $periode)
+            ->sum('anggaran');
 
 
-        if (empty($anggaran)) {
+        if (empty($anggaran) || $anggaran <= 0) {
             return  response()->json(['message' => 'Periode Rencana Anggaran Belanja pada waktu pelaksanaan tersebut tidak ada', 'status' => 400], 400);
         }
 
+        // $budget_used = DB::table('rabs')
+        //     ->where('laboratorium', '=', $rab['laboratorium'])
+        //     ->where('waktu_pelaksanaan', '>=', $anggaran->datestart)
+        //     ->where('waktu_pelaksanaan', '<=', $anggaran->dateend)
+        //     ->sum('jumlah');
+
         $budget_used = DB::table('rabs')
             ->where('laboratorium', '=', $rab['laboratorium'])
-            ->where('waktu_pelaksanaan', '>=', $anggaran->datestart)
-            ->where('waktu_pelaksanaan', '<=', $anggaran->dateend)
+            ->whereYear('waktu_pelaksanaan', '=', $periode)
             ->sum('jumlah');
 
-        $remain_budget = $anggaran->anggaran - $budget_used;
+        $remain_budget = $anggaran - $budget_used;
 
         if ($rab['jumlah'] > $remain_budget) {
             return  response()->json(['message' => 'RAB melebihi Anggaran, sisa anggaran : ' . $remain_budget, 'status' => 400], 400);
@@ -125,25 +139,40 @@ class RabController extends Controller
         $rab = $rabrequest['rab'];
         $rabdetail = $rabrequest['rabdetail'];
 
+        // $anggaran = DB::table('anggaran')
+        //     ->where('laboratorium', '=', $rab['laboratorium'])
+        //     ->where('datestart', '<=', $rab['waktu_pelaksanaan'])
+        //     ->where('dateend', '>=', $rab['waktu_pelaksanaan'])
+        //     ->first();
+
+
+        $periode = date('Y', strtotime(($rab['waktu_pelaksanaan'])));
+
         $anggaran = DB::table('anggaran')
             ->where('laboratorium', '=', $rab['laboratorium'])
-            ->where('datestart', '<=', $rab['waktu_pelaksanaan'])
-            ->where('dateend', '>=', $rab['waktu_pelaksanaan'])
-            ->first();
+            ->where('periode', '=', $periode)
+            ->sum('anggaran');
 
 
-        if (empty($anggaran)) {
+        if (empty($anggaran) || $anggaran <= 0) {
             return  response()->json(['message' => 'Periode Rencana Anggaran Belanja pada waktu pelaksanaan tersebut tidak ada', 'status' => 400], 400);
         }
 
+        // $budget_used = DB::table('rabs')
+        //     ->where('id', '!=', $id)
+        //     ->where('laboratorium', '=', $rab['laboratorium'])
+        //     ->where('waktu_pelaksanaan', '>=', $anggaran->datestart)
+        //     ->where('waktu_pelaksanaan', '<=', $anggaran->dateend)
+        //     ->sum('jumlah');
+
+        // $remain_budget = $anggaran->anggaran - $budget_used;
+
         $budget_used = DB::table('rabs')
-            ->where('id', '!=', $id)
             ->where('laboratorium', '=', $rab['laboratorium'])
-            ->where('waktu_pelaksanaan', '>=', $anggaran->datestart)
-            ->where('waktu_pelaksanaan', '<=', $anggaran->dateend)
+            ->whereYear('waktu_pelaksanaan', '=', $periode)
             ->sum('jumlah');
 
-        $remain_budget = $anggaran->anggaran - $budget_used;
+        $remain_budget = $anggaran - $budget_used;
 
         if ($rab['jumlah'] > $remain_budget) {
             return  response()->json(['message' => 'RAB melebihi Anggaran, sisa anggaran : ' . $remain_budget, 'status' => 400], 400);
@@ -197,9 +226,40 @@ class RabController extends Controller
     {
 
         $status =  $request->status;
+
+
+        $msg = [
+            'rejected' => 'Mohon Maaf, periksa dan perbaiki kembali Rencana Anggaran Belanja dengan informasi sebagai berikut:',
+            'accepted' => 'RAB dengan informasi berikut telah disetujui.',
+            'update' => 'RAB dengan informasi berikut perlu di update kembali.',
+            'pending' => 'RAB dengan informasi berikut di ubah ke status pending'
+        ];
+
         try {
-            //code...
+
+            $rab = DB::table('rabs')
+                ->join('jenis_rab', 'jenis_rab.id', '=', 'rabs.jenis_rab')
+                ->join('laboratorium', 'laboratorium.id', '=', 'rabs.laboratorium')
+                ->where('rabs.id', $id)
+                ->select(['rabs.*', 'jenis_rab.jenis', 'laboratorium.laboratorium as laboratoriumname'])
+                ->get()->toArray();
+
+            $users = DB::table('users')->where('laboratorium', '=', $rab[0]->laboratorium)
+                ->select('email')
+                ->get()->toArray();
+
+
             Rab::where('id', $id)->update(array('status' => $status));
+
+            $data = [
+                'subject' => 'Rencana Aggaran Belanja',
+                "body" => $rab,
+                'message' => $msg[$status]
+            ];
+
+            foreach ($users as  $user) {
+                Mail::to($user->email)->send(new MailNotify($data));
+            }
         } catch (Error $e) {
             return  response()->json(['message' => $e->getMessage(), 'status' => 400], 400);
         }

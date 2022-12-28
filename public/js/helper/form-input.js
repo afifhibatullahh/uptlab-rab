@@ -3,12 +3,14 @@ const InputField = ({
     title = "",
     name = "",
     id = "",
+    placeholder = "",
     width = "col-md-12",
     autofocus = false,
     disabled = false,
     onclick = "clearValidationError(this)",
     accept = "image/jpg, image/jpeg, image/png, image/webp, image/gif",
     onchange = "",
+    maxLength = null,
 } = {}) => {
     return `
         <div class="form-row">
@@ -16,9 +18,10 @@ const InputField = ({
                 <label for="${name}">${title}</label>
                 <input type="${type}" id="${
         id !== "" ? id : name
-    }" name="${name}" onchange="${onchange}" onclick="${onclick}" class="form-control ${
+    }" name="${name}" placeholder="${placeholder}" onchange="${onchange}" onclick="${onclick}" class="form-control ${
         id === "custom-money" ? "input-money" : ""
     }" ${autofocus ? "autofocus" : ""} ${disabled ? "disabled" : ""}
+    ${maxLength !== null ? `maxlength="${maxLength}"` : ""}
       accept="${type === "file" ? accept : ""}">
                 <div id="error-${name}" class="invalid-feedback"></div>
             </div>

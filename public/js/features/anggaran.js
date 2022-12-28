@@ -1,4 +1,4 @@
-const menuContext = "Jenis RAB";
+const menuContext = "Anggaran";
 const tableId = "#table-anggaran";
 const formId = "#form-anggaran";
 const indexAPI = `${site_url_api}/anggaran`;
@@ -46,8 +46,8 @@ $(document).ready(function () {
                 title: "Anggaran",
                 render: $.fn.dataTable.render.number(".", ",", 2),
             },
-            { data: "datestart", title: "Tanggal Mulai" },
-            { data: "dateend", title: "Tanggal Selesai" },
+            { data: "periode", title: "Periode Anggaran" },
+            { data: "catatan", title: "Catatan" },
         ],
         {
             id_lab: id_lab,
@@ -97,14 +97,14 @@ $(document).ready(function () {
     $(formId).append(`
         ${InputField({ title: "Anggaran", name: "anggaran", type: "number" })}
         ${InputField({
-            title: "Tanggal Mulai",
-            type: "date",
-            name: "datestart",
+            title: "Tahun Anggaran",
+            name: "periode",
+            maxLength: 4,
+            placeholder: "YYYY",
         })}
         ${InputField({
-            title: "Tanggal Selesai",
-            type: "date",
-            name: "dateend",
+            title: "Catatan",
+            name: "catatan",
         })}
         ${Button({
             text: "Tambah",
@@ -114,9 +114,9 @@ $(document).ready(function () {
         ${Button({ text: "Cancel", dataDismiss: "modal", color: "danger" })}
     `);
 
-    $("#datestart").on("change", function () {
-        $("#dateend").attr("min", $("#datestart").val());
-    });
+    // $("#datestart").on("change", function () {
+    //     $("#dateend").attr("min", $("#datestart").val());
+    // });
 });
 
 const getCurrentanggaran = (id) => {
@@ -183,12 +183,12 @@ const edit = (id) => {
     $(modalProceedBtnId).text("Ubah");
     $(formId).attr("action", updateAPI + "/" + id);
     $("#anggaran").val(currentanggaran.anggaran);
-    $("#datestart").val(currentanggaran.datestart);
-    $("#dateend").val(currentanggaran.dateend);
+    $("#periode").val(currentanggaran.periode);
+    $("#catatan").val(currentanggaran.catatan);
 
-    $("#dateend").attr("min", $("#datestart").val());
+    // $("#dateend").attr("min", $("#datestart").val());
 
-    console.log($("#dateend"));
+    // console.log($("#dateend"));
     clearValidationError();
 };
 

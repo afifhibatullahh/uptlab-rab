@@ -24,21 +24,21 @@ class AnggaranController extends Controller
     {
         //create item
 
-        $isHasbeenCreatedPeriod = DB::table('anggaran')
-            ->where('laboratorium', '=', $request->laboratorium)
-            ->where('datestart', '<=', $request->datestart)
-            ->where('dateend', '>=', $request->datestart)
-            ->first();
+        // $isHasbeenCreatedPeriod = DB::table('anggaran')
+        //     ->where('laboratorium', '=', $request->laboratorium)
+        //     ->where('datestart', '<=', $request->datestart)
+        //     ->where('dateend', '>=', $request->datestart)
+        //     ->first();
 
-        if (isset($isHasbeenCreatedPeriod)) {
-            return  response()->json(['message' => 'Anggaran periode tersebut sudah ada', 'status' => 400], 400);
-        }
+        // if (isset($isHasbeenCreatedPeriod)) {
+        //     return  response()->json(['message' => 'Anggaran periode tersebut sudah ada', 'status' => 400], 400);
+        // }
 
         $anggaran = Anggaran::create([
             'laboratorium'     => $request->laboratorium,
             'anggaran'     => $request->anggaran,
-            'datestart'     => $request->datestart,
-            'dateend'     => $request->dateend,
+            'periode'     => $request->periode,
+            'catatan'     => $request->catatan,
         ]);
 
         //return response
@@ -53,22 +53,23 @@ class AnggaranController extends Controller
         //create item
         $anggaran = Anggaran::where('id', $id)->first();
 
-        $isHasbeenCreatedPeriod = DB::table('anggaran')
-            ->where('laboratorium', '=', $request->laboratorium)
-            ->where('datestart', '<=', $request->datestart)
-            ->where('dateend', '>=', $request->datestart)
-            ->first();
+        // $isHasbeenCreatedPeriod = DB::table('anggaran')
+        //     ->where('laboratorium', '=', $request->laboratorium)
+        //     ->where('datestart', '<=', $request->datestart)
+        //     ->where('dateend', '>=', $request->datestart)
+        //     ->first();
 
-        $isStillOnPeriod = $anggaran->datestart <= $request->datestart && $anggaran->dateend >= $request->datestart;
+        // $isStillOnPeriod = $anggaran->datestart <= $request->datestart && $anggaran->dateend >= $request->datestart;
 
         //return response
-        if ($anggaran && ($isStillOnPeriod || empty($isHasbeenCreatedPeriod))) {
+        // if ($anggaran && ($isStillOnPeriod || empty($isHasbeenCreatedPeriod))) {
+        if ($anggaran) {
 
             $anggaran->update([
                 'laboratorium'     => $request->laboratorium,
                 'anggaran'     => $request->anggaran,
-                'datestart'     => $request->datestart,
-                'dateend'     => $request->dateend,
+                'periode'     => $request->periode,
+                'catatan'     => $request->catatan,
             ]);
 
 
