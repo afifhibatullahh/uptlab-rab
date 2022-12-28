@@ -155,14 +155,15 @@ const getCurrentrab = (id) => {
     return currentrab;
 };
 
-const updateStatus = () => {
+const updateStatus = async () => {
     let url = $(formId).attr("action");
     const form = $(formId)[0];
     const requestBody = new FormData(form);
 
     requestBody.append("_method", "PATCH");
+    $(modalProceedBtnId).attr("disabled", true);
 
-    ajax({
+    await ajax({
         type: "POST",
         url: url,
         data: requestBody,
@@ -188,6 +189,8 @@ const updateStatus = () => {
             }
         },
     });
+
+    $(modalProceedBtnId).attr("disabled", false);
 };
 
 const destroy = (id) => {
