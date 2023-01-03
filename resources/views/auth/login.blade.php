@@ -28,9 +28,11 @@
 
         <div class="row align-items-center h-100">
             <form class="col-lg-3 col-md-4 col-10 mx-auto text-center" action="/login/auth" method="POST">
-                <a class="navbar-brand mx-auto mt-2 flex-fill text-center mb-5" href="./index.html">
+                <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
                     <img src="/assets/images/Logo_ITERA.png" width="100px" alt="">
                 </a>
+                <h5 class="mb-5">Sistem Rencana Anggaran Belanja <br> UPT Laboratorium <br> Institut Teknologi Sumatera
+                </h5>
                 @if(count($errors) > 0)
                 @foreach ($errors->all() as $error)
                 <div class="alert alert-danger" role="alert">

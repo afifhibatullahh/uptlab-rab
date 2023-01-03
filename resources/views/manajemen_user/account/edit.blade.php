@@ -11,7 +11,6 @@
                         <?= $title ?>
                     </h2>
                 </div>
-
             </div>
         </div>
     </div>

@@ -78,6 +78,7 @@ Route::middleware([isLogin::class])->group(function () {
         Route::delete('/user/delete/{id}', 'deleteUser');
         Route::get('/account', 'account');
         Route::get('/account/edit', 'editAccount');
-        Route::patch('/account/update', 'updateAccount');
+        Route::post('/account/update', 'updateAccount');
+        Route::post('/account/updatepassword', 'updatePassword');
     });
 });
