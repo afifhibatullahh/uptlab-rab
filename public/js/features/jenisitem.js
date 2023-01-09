@@ -90,6 +90,11 @@ $(document).ready(function () {
         })}
         ${Button({ text: "Cancel", dataDismiss: "modal", color: "danger" })}
     `);
+
+    $("form").on("submit", function (e) {
+        save();
+        e.preventDefault();
+    });
 });
 
 const getCurrentjenis = (id) => {

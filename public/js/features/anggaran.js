@@ -117,6 +117,11 @@ $(document).ready(function () {
     // $("#datestart").on("change", function () {
     //     $("#dateend").attr("min", $("#datestart").val());
     // });
+
+    $("form").on("submit", function (e) {
+        save();
+        e.preventDefault();
+    });
 });
 
 const getCurrentanggaran = (id) => {
