@@ -19,16 +19,19 @@ class JenisItemController extends Controller
 
     public function store(Request $request)
     {
-        //create item
-        $jenis = JenisItem::create([
-            'jenis'     => $request->jenis,
-        ]);
 
-        //return response
-        if ($jenis)
-            return  response()->json(['data' => $jenis, 'message' => 'Data berhasil ditambahkan', 'status' => 200], 200);
-        else
-            return  response()->json(['data' => $jenis, 'message' => 'Data gagal ditambahkan', 'status' => 403], 403);
+        try {
+            //create item
+            $jenis = JenisItem::create([
+                'jenis'     => $request->jenis,
+            ]);
+            //code...
+        } catch (\Throwable $th) {
+            return  response()->json(['message' => 'Data gagal ditambahkan', 'status' => 403], 403);
+            //throw $th;
+        }
+
+        return  response()->json(['data' => $jenis, 'message' => 'Data berhasil ditambahkan', 'status' => 200], 200);
     }
 
     public function update(Request $request, $id)

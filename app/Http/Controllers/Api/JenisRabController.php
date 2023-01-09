@@ -18,16 +18,18 @@ class JenisRabController extends Controller
 
     public function store(Request $request)
     {
-        //create item
-        $jenisrab = JenisRab::create([
-            'jenis'     => $request->jenis,
-        ]);
 
-        //return response
-        if ($jenisrab)
-            return  response()->json(['data' => $jenisrab, 'message' => 'Data berhasil ditambahkan', 'status' => 200], 200);
-        else
-            return  response()->json(['data' => $jenisrab, 'message' => 'Data gagal ditambahkan', 'status' => 403], 403);
+        try {
+            //create item
+            $jenisrab = JenisRab::create([
+                'jenis'     => $request->jenis,
+            ]);
+            //code...
+        } catch (\Throwable $th) {
+            return  response()->json(['message' => 'Data gagal ditambahkan', 'status' => 403], 403);
+        }
+
+        return  response()->json(['data' => $jenisrab, 'message' => 'Data berhasil ditambahkan', 'status' => 200], 200);
     }
 
     public function update(Request $request, $id)

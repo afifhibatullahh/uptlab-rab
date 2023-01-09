@@ -8,6 +8,7 @@ use App\Models\PaketDetail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -30,6 +31,18 @@ class PaketRabController extends Controller
 
         $paketrab = $paketrabrequest['paketrab'];
         $paketrabdetail = $paketrabrequest['paketrabdetail'];
+
+        $validator = Validator::make($paketrab, [
+            'title' => 'required',
+            'jenis_rab' => 'required',
+            'nomor_akun' => 'required',
+            'waktu_pelaksanaan' => 'required',
+        ])->validate();
+
+        if (count($paketrabdetail) <= 0) {
+            return  response()->json(['message' => 'Rab Harus diisi', 'status' => 400], 400);
+        }
+
         try {
             DB::beginTransaction();
             // database queries here
@@ -76,7 +89,16 @@ class PaketRabController extends Controller
 
         $paketrab = $paketrabrequest['paketrab'];
         $paketrabdetail = $paketrabrequest['paketrabdetail'];
+        $validator = Validator::make($paketrab, [
+            'title' => 'required',
+            'jenis_rab' => 'required',
+            'nomor_akun' => 'required',
+            'waktu_pelaksanaan' => 'required',
+        ])->validate();
 
+        if (count($paketrabdetail) <= 0) {
+            return  response()->json(['message' => 'Rab Harus diisi', 'status' => 400], 400);
+        }
 
         try {
             DB::beginTransaction();

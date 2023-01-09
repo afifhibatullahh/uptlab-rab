@@ -20,15 +20,15 @@ class SatuanController extends Controller
     public function store(Request $request)
     {
         //create item
-        $satuan = Satuan::create([
-            'satuan'     => $request->satuan,
-        ]);
+        try {
+            $satuan = Satuan::create([
+                'satuan'     => $request->satuan,
+            ]);
+        } catch (\Throwable $th) {
+            return  response()->json(['message' => 'Data gagal ditambahkan', 'status' => 403], 403);
+        }
 
-        //return response
-        if ($satuan)
-            return  response()->json(['data' => $satuan, 'message' => 'Data berhasil ditambahkan', 'status' => 200], 200);
-        else
-            return  response()->json(['data' => $satuan, 'message' => 'Data gagal ditambahkan', 'status' => 403], 403);
+        return  response()->json(['data' => $satuan, 'message' => 'Data berhasil ditambahkan', 'status' => 200], 200);
     }
 
     public function update(Request $request, $id)
