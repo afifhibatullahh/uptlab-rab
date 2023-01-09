@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -51,6 +52,21 @@ class RabController extends Controller
 
         $rab = $rabrequest['rab'];
         $rabdetail = $rabrequest['rabdetail'];
+
+
+        $validator = Validator::make($rab, [
+            'title' => 'required',
+            'jenis_rab' => 'required',
+            'nomor_akun' => 'required',
+            'laboratorium' => 'required',
+            'waktu_pelaksanaan' => 'required',
+        ], [
+            'required' => 'The :attribute field is required.',
+        ])->validate();
+
+        if (count($rabdetail) <= 0) {
+            return  response()->json(['message' => 'Barang Harus diisi', 'status' => 400], 400);
+        }
 
         // $anggaran = DB::table('anggaran')
         //     ->where('laboratorium', '=', $rab['laboratorium'])
@@ -101,7 +117,7 @@ class RabController extends Controller
                     'jumlah' => $rab['jumlah'],
                 ]);
             } catch (Exception $e) {
-                return  response()->json(['data' => ['msg' => $e->getMessage(), 'msgdetail' => $e->getTrace()],], 403);
+                return  response()->json(['message' => $e->getMessage()], 403);
             }
 
             $newDetail = [];
@@ -138,6 +154,21 @@ class RabController extends Controller
 
         $rab = $rabrequest['rab'];
         $rabdetail = $rabrequest['rabdetail'];
+
+
+        $validator = Validator::make($rab, [
+            'title' => 'required',
+            'jenis_rab' => 'required',
+            'nomor_akun' => 'required',
+            'laboratorium' => 'required',
+            'waktu_pelaksanaan' => 'required',
+        ], [
+            'required' => 'The :attribute field is required.',
+        ])->validate();
+
+        if (count($rabdetail) <= 0) {
+            return  response()->json(['message' => 'Barang Harus diisi', 'status' => 400], 400);
+        }
 
         // $anggaran = DB::table('anggaran')
         //     ->where('laboratorium', '=', $rab['laboratorium'])
@@ -317,8 +348,16 @@ class RabController extends Controller
             $sheet = $spreadsheet->getActiveSheet();
 
 
-            foreach (range('A', 'K') as $columnID) {
-                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            $range = range('A', 'K');
+            $except = array('B', 'C', 'H');
+
+            foreach ($range as $columnID) {
+                if (\in_array($columnID, $except)) {
+                    $sheet->getColumnDimension($columnID)->setWidth(20);
+                    $sheet->getStyle($columnID)
+                        ->getAlignment()->setWrapText(true);
+                } else
+                    $sheet->getColumnDimension($columnID)->setAutoSize(\true);
             }
 
             $style = array(
@@ -421,6 +460,21 @@ class RabController extends Controller
             $sheet->setCellValue('H' . $row, 'Total RAB :');
             $sheet->setCellValue('I' . $row, 'Rp. ' . $total_rab);
             $sheet->getStyle('H' . $row . ':I' . $row)->applyFromArray($styleArray);
+
+            ++$row;
+            ++$row;
+            ++$row;
+            $sheet->setCellValue('B' . $row, 'Diajukan,');
+            $sheet->setCellValue('C' . $row, 'Pelaksana,');
+            $sheet->setCellValue('F' . $row, 'Diketahui,');
+            $sheet->setCellValue('H' . $row, 'Disetujui');
+            $sheet->setCellValue('I' . $row, 'Dikeluarkan,');
+            ++$row;
+            $sheet->setCellValue('B' . $row, 'Adm. UPT Lab');
+            $sheet->setCellValue('C' . $row, 'Koor. Lab ...');
+            $sheet->setCellValue('F' . $row, 'Kepala UPT Lab Terpadu');
+            $sheet->setCellValue('H' . $row, 'Pejabat Pembuat Komitmen');
+            $sheet->setCellValue('I' . $row, 'Bendahara Pengeluaran');
 
 
             $writer = new Xlsx($spreadsheet);
