@@ -22,6 +22,7 @@ class PaketRab extends Controller
             ->join('laboratorium', 'rabs.laboratorium', '=', 'laboratorium.id')
             ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
             ->select('title', 'nomor_akun', 'waktu_pelaksanaan', 'rabs.id', 'jenis_rab.jenis as jenis_rab', 'laboratorium.laboratorium')
+            ->where('status', "=", 'accepted')
             ->get();
 
 
