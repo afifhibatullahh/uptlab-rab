@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\JenisItemController;
 use App\Http\Controllers\Api\JenisRabController;
 use App\Http\Controllers\Api\LaboratoriumController;
+use App\Http\Controllers\Api\ManajemenUserController;
 use App\Http\Controllers\Api\PaketRabController;
 use App\Http\Controllers\Api\RabController;
 use App\Http\Controllers\Api\SatuanController;
@@ -86,4 +87,9 @@ Route::controller(PaketRabController::class)->group(function () {
     Route::post('/paketrab/exportpaketrab', 'exportPaketRab');
     Route::patch('/paketrab/update/{id}', 'update');
     Route::delete('/paketrab/delete/{id}', 'delete');
+});
+
+Route::controller(ManajemenUserController::class)->group(function () {
+    Route::get('/users', 'index');
+    Route::delete('/users/delete/{id}', 'delete');
 });
