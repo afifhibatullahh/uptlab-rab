@@ -11,38 +11,38 @@ const modalId = "#modal";
 const modalProceedBtnId = "#modalProceedBtnId";
 
 $(document).ready(function () {
-    const tableItem = initializeDatatables(
-        tableId,
-        indexAPI,
-        [
-            {
-                data: "id",
-                title: "Actions",
-                searchable: false,
-                orderable: false,
-                render: function (id, type, item) {
-                    allItem.add(item);
+    let columns = [
+        {
+            data: "id",
+            title: "Actions",
+            searchable: false,
+            orderable: false,
+            render: function (id, type, item) {
+                allItem.add(item);
 
-                    return `
-                        ${Button({
-                            text: "Edit",
-                            color: "warning btn-sm",
-                            onclick: `edit(${id})`,
-                        })}
-                        ${Button({
-                            text: "Hapus",
-                            color: "danger btn-sm",
-                            onclick: `destroy(${id})`,
-                        })}
-                        ${Button({
-                            text: "Detail",
-                            color: "info btn-sm",
-                            onclick: `detail(${id})`,
-                        })}
-                    `;
-                },
+                return `
+                    ${Button({
+                        text: "Edit",
+                        color: "warning btn-sm",
+                        onclick: `edit(${id})`,
+                    })}
+                    ${Button({
+                        text: "Hapus",
+                        color: "danger btn-sm",
+                        onclick: `destroy(${id})`,
+                    })}
+                    ${Button({
+                        text: "Detail",
+                        color: "info btn-sm",
+                        onclick: `detail(${id})`,
+                    })}
+                `;
             },
-            { data: "nomor_akun", title: "Nomor Akun" },
+        },
+        { data: "nomor_akun", title: "Nomor Akun" },
+    ];
+    if (isSuperAdmin) {
+        columns.push(
             {
                 data: "status",
                 title: "Status",
@@ -60,14 +60,26 @@ $(document).ready(function () {
                         dataToggle: "modal",
                         dataTarget: modalId,
                     })}
-                    `;
+                `;
                 },
             },
             { data: "jenis", title: "Jenis" },
-            { data: "waktu_pelaksanaan", title: "Waktu Pelaksanaan " },
-        ],
-        { userId: userId }
-    );
+            { data: "waktu_pelaksanaan", title: "Waktu Pelaksanaan " }
+        );
+    } else {
+        columns.push(
+            {
+                data: "status",
+                title: "Status",
+            },
+            { data: "jenis", title: "Jenis" },
+            { data: "waktu_pelaksanaan", title: "Waktu Pelaksanaan " }
+        );
+    }
+
+    const tableItem = initializeDatatables(tableId, indexAPI, columns, {
+        userId: userId,
+    });
 
     $(modalStatus).append(
         `${ModalPlain({

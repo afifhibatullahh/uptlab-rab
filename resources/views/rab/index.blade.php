@@ -33,9 +33,11 @@
 </main>
 
 @endSection
+<?php $isSuperAdmin = Auth::user()->role == 'super admin' ? 1 : 0?>
 
 @section('script'); ?>
 <script>
+    const isSuperAdmin = <?= $isSuperAdmin; ?>;                               
     const userId = {{ Auth::user()->id}};
 </script>
 <script src="{{url('js/features/rab.js')}}"></script>

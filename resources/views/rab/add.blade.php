@@ -63,17 +63,21 @@
 
                                     <div class="form-group mb-3">
                                         <label for="laboratorium-select">Laboratorium</label>
+                                        @if(!$isSuperAdmin)
+                                        <input type="hidden" name="laboratorium" value="<?=$userLab ?>" />
+                                        @endif
+
                                         <select class="form-control" required <?=$isSuperAdmin ? '' : 'disabled' ; ?>
                                             name="laboratorium" id="laboratorium-select">
                                             <option selected disabled>Pilih Laboratorium</option>
                                             @foreach($laboratorium as $lab)
-                                            @if($isSuperAdmin){
-                                            <option value='{{$lab->id}}'>{{$lab->laboratorium}}</option>
-                                            }
-                                            @else{
+                                            @if($isSuperAdmin)
+                                            <option value='{{$lab->id}}' ">{{$lab->laboratorium}}
+                                            </option>
+                                            @else
                                             <option value='{{$lab->id}}' <?=$userLab===$lab->id?'selected':'' ?>
                                                 >{{$lab->laboratorium}}</option>
-                                            }
+
                                             @endif
 
                                             @endforeach
@@ -85,96 +89,74 @@
                     </div> <!-- / .card -->
                 </form>
 
-                <div class="card shadow mb-4">
-                    <div class="card-header">
-                        <strong class="card-title">
-                            <div class="d-flex justify-content-between mb-2">
-                                <h3>Item</h3>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                                    data-target="#modal" onclick="addItem()">Tambah Item</button>
-                            </div>
-                        </strong>
-                    </div>
-                    <div class="card-body">
-                        <!-- table -->
-                        <table class="table datatables" id="table-rabdetail">
-                            <!-- <thead>
-                                <tr>
-                                    <th>Nama Barang</th>
-                                    <th>Jumlah</th>
-                                    <th>Satuan</th>
-                                    <th>Harga Satuan(Rp)</th>
-                                    <th>Jumlah Harga</th>
-                                    <th>Jenis Barang</th>
-                                    <th>Pajak (%)</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Imani Lara</td>
-                                    <td>2</td>
-                                    <td>pcs</td>
-                                    <td>2000</td>
-                                    <td>4000</td>
-                                    <td>High Wycombe</td>
-                                    <td>11</td>
-                                    <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="text-muted sr-only">Action</span>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody> -->
-                        </table>
-                        <div class="row mt-5">
-                            <div class="col-12">
-                                <div class="float-right mr-2">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td> <span class="text-muted">Total Harga</span></td>
-                                                <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="total1">Rp.0</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td> <span class="text-muted">Ongkir/Kenaikan Harga 10%</span></td>
-                                                <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="expenses">Rp.0</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td> <span class="text-muted">Total 2</span></td>
-                                                <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="total2">Rp.0</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td> <span class="text-muted">PPN 11%</span></td>
-                                                <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="tax">Rp.0</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td> <span class="text-muted">Total RAB</span></td>
-                                                <td> <span class="text-muted">: </span></td>
-                                                <td> <strong id="total_rab">Rp.0</strong></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                <div class=" card shadow mb-4">
+                                                <div class="card-header">
+                                                    <strong class="card-title">
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <h3>Item</h3>
+                                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                data-toggle="modal" data-target="#modal"
+                                                                onclick="addItem()">Tambah Item</button>
+                                                        </div>
+                                                    </strong>
+                                                </div>
+                                                <div class="card-body">
+                                                    <!-- table -->
+                                                    <table class="table datatables" id="table-rabdetail">
+                                                    </table>
+                                                    <div class="row mt-5">
+                                                        <div class="col-12">
+                                                            <div class="float-right mr-2">
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td> <span class="text-muted">Total
+                                                                                    Harga</span></td>
+                                                                            <td> <span class="text-muted">: </span></td>
+                                                                            <td> <strong id="total1">Rp.0</strong></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td> <span
+                                                                                    class="text-muted">Ongkir/Kenaikan
+                                                                                    Harga 10%</span></td>
+                                                                            <td> <span class="text-muted">: </span></td>
+                                                                            <td> <strong id="expenses">Rp.0</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td> <span class="text-muted">Total 2</span>
+                                                                            </td>
+                                                                            <td> <span class="text-muted">: </span></td>
+                                                                            <td> <strong id="total2">Rp.0</strong></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td> <span class="text-muted">PPN 11%</span>
+                                                                            </td>
+                                                                            <td> <span class="text-muted">: </span></td>
+                                                                            <td> <strong id="tax">Rp.0</strong></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td> <span class="text-muted">Total
+                                                                                    RAB</span></td>
+                                                                            <td> <span class="text-muted">: </span></td>
+                                                                            <td> <strong id="total_rab">Rp.0</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!-- /.row -->
+                                                </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div> <!-- /.row -->
+                            </div> <!-- .col-12 -->
+                        </div> <!-- .row -->
                     </div>
-                </div>
-            </div>
-        </div> <!-- .col-12 -->
-    </div> <!-- .row -->
-    </div>
 
 
-    <!-- Modal -->
-    <div id="modal-rabdetail"></div>
+                    <!-- Modal -->
+                    <div id="modal-rabdetail"></div>
 </main>
 
 @endSection
