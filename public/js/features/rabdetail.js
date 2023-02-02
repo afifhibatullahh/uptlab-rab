@@ -29,10 +29,11 @@ function getDataRab() {
         rab[data[0]] = data[1];
     }
 
-    return {
-        rab: rab,
-        rabdetail: rabdetail,
-    };
+    if (title === "")
+        return {
+            rab: rab,
+            rabdetail: rabdetail,
+        };
 }
 
 function saveRabDetail() {
