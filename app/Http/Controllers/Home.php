@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Home extends Controller
@@ -17,10 +18,16 @@ class Home extends Controller
 
         $laboratorium_anggaran = DB::table('anggaran')
             ->join('laboratorium', 'laboratorium.id', '=', 'anggaran.laboratorium')
-            ->whereYear('periode', \date('Y'))
-            ->select(['laboratorium.laboratorium', DB::raw('SUM(anggaran) as anggaran')])
-            ->groupBy('laboratorium')
-            ->get()->toArray();
+            ->whereYear('periode', \date('Y'));
+
+        if (Auth::user()->role !== 'super admin') {
+            $laboratorium_anggaran->where('anggaran.laboratorium', '=', Auth::user()->laboratorium);
+        }
+
+        $laboratorium_anggaran->select(['laboratorium.laboratorium', DB::raw('SUM(anggaran) as anggaran')])
+            ->groupBy('laboratorium');
+
+        $laboratorium_anggaran = ($laboratorium_anggaran->get()->toArray());
 
         return view('home', \compact(['total_rab', 'total_rab_accepted', 'laboratorium_anggaran']));
     }

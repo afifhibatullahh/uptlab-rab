@@ -57,6 +57,7 @@
                                     <th>Jumlah Harga (Rp)</th>
                                     <th>Sumber/Supplier</th>
                                     <th>Jenis Barang</th>
+                                    <th>Gambar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,8 +70,10 @@
                                     <td> {{$item->satuan}} </td>
                                     <td> {{$item->harga_satuan}} </td>
                                     <td> @convert($item->jumlah_harga) </td>
-                                    <td> {{$item->sumber}} </td>
+                                    <td style="width:100px"> {{$item->sumber}} </td>
                                     <td> {{$item->jenis_item}} </td>
+                                    <td><img width="70px" src="{{url('/assets/images/item/'.$item->gambar)}}"
+                                            alt="produk"> </td>
 
                                 </tr>
 

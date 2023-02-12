@@ -102,7 +102,7 @@ class Rab extends Controller
         $rabdetail = DB::table('rabdetails')
             ->join('items', 'items.id', '=', 'rabdetails.id_item')
             ->join('jenis_item', 'jenis_item.id', '=', 'items.jenis_item')
-            ->select('rabdetails.*', 'jenis_item.jenis as jenis_item', 'items.nama_barang', 'items.harga_satuan', 'items.sumber')
+            ->select('rabdetails.*', 'jenis_item.jenis as jenis_item', 'items.nama_barang', 'items.gambar', 'items.harga_satuan', 'items.sumber')
             ->where('rab_id_ref', $id)
             ->orderBy('nama_barang', 'asc')->get();
 
