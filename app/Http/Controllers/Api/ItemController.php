@@ -23,6 +23,24 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         //upload image
+        $rules = [
+            "nama_barang" => 'required',
+            "harga_satuan" => 'required|numeric',
+            "satuan" => 'required',
+            "jenis_item" => 'required',
+            "sumber" => 'required',
+            "spesifikasi" => 'required',
+        ];
+
+        $data = $request->all();
+
+        $validator = Validator::make($data, $rules);
+
+
+        if ($validator->fails()) {
+            return  response()->json(['message' => $validator->errors()->first()], 403);
+        }
+
         $image = $request->file('gambar');
         $imageName = 'default.jpg';
         if (!empty($image)) {

@@ -7,6 +7,7 @@ use App\Models\Anggaran;
 use App\Models\Laboratorium;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class LaboratoriumController extends Controller
 {
@@ -22,9 +23,24 @@ class LaboratoriumController extends Controller
     public function store(Request $request)
     {
         //create item
+
+        $rules = [
+            "laboratorium" => 'required',
+        ];
+
+        $data = $request->all();
+
+        $validator = Validator::make($data, $rules);
+
+
+        if ($validator->fails()) {
+            return  response()->json(['message' => $validator->errors()->first()], 403);
+        }
+
         $laboratorium = Laboratorium::create([
             'laboratorium'     => $request->laboratorium,
         ]);
+
 
         //return response
         if ($laboratorium)

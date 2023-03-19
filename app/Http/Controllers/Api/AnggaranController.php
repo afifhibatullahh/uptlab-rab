@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Anggaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -33,6 +34,20 @@ class AnggaranController extends Controller
         // if (isset($isHasbeenCreatedPeriod)) {
         //     return  response()->json(['message' => 'Anggaran periode tersebut sudah ada', 'status' => 400], 400);
         // }
+
+        $rules = [
+            "anggaran" => 'required|numeric',
+            "periode" => 'required|numeric|digits:4',
+        ];
+
+        $data = $request->all();
+
+        $validator = Validator::make($data, $rules);
+
+
+        if ($validator->fails()) {
+            return  response()->json(['message' => $validator->errors()->first()], 403);
+        }
 
         $anggaran = Anggaran::create([
             'laboratorium'     => $request->laboratorium,
