@@ -39,6 +39,7 @@ $(document).ready(function () {
                 `;
             },
         },
+        { data: "title", title: "Judul" },
         { data: "nomor_akun", title: "Nomor Akun" },
     ];
     if (isSuperAdmin) {

@@ -67,8 +67,6 @@ class PaketRab extends Controller
 
     public function show($id = null)
     {
-
-
         $paket = DB::table('pakets')
             ->join('jenis_rab', 'pakets.jenis_pengadaan', '=', 'jenis_rab.id')
             ->select('pakets.*', 'jenis_rab.jenis as jenis_pengadaan')
@@ -82,7 +80,6 @@ class PaketRab extends Controller
             ->select('rabs.*', 'jenis_rab.jenis as jenis_rab', 'laboratorium.laboratorium as laboratorium',)
             ->where('id_paket', $id)
             ->get()->toArray();
-
         $rab_items = [];
 
         foreach ($rabdetail as $rab) {
@@ -101,13 +98,14 @@ class PaketRab extends Controller
         $rekap = [];
         $filteredItems = [];
 
+        // \dd($rab_items);
         foreach ($rab_items as $items) {
             $lab = ($items['laboratorium']);
             foreach ($items['items'] as $item) {
                 $item->laboratorium = $lab;
                 $filteredItems[] = $item;
                 $paketToJson[$item->jenis_item][] = $item;
-                $rekap[$item->jenis_item] = $rekap[$item->jenis_item] ?? 0 + $item->jumlah_harga;
+                $rekap[$item->jenis_item] = ($rekap[$item->jenis_item] ?? 0) + $item->jumlah_harga;
             }
         }
 

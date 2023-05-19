@@ -26,18 +26,20 @@ class RabController extends Controller
 
         $userId = $request->userId;
 
-        if ($userId == 1)
+        if ($userId == 1) {
             $rab = DB::table('rabs')
                 ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
-                ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan')
+                ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan', 'title')
+                ->orderBy('rabs.created_at', 'desc')
                 ->get();
-        else {
+        } else {
             $laboratorium = DB::table('users')->select('laboratorium')->where('id', $userId)->first();
 
             $rab = DB::table('rabs')
                 ->join('jenis_rab', 'rabs.jenis_rab', '=', 'jenis_rab.id')
-                ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan')
+                ->select('rabs.id', 'nomor_akun', 'status', 'jenis_rab.jenis as jenis', 'waktu_pelaksanaan', 'title')
                 ->where('laboratorium', $laboratorium->laboratorium)
+                ->orderBy('rabs.created_at', 'desc')
                 ->get();
         }
 
